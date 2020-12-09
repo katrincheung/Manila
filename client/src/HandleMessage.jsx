@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import WaitingPage from "./WaitingPage";
 import LoginPage from "./LoginPage";
-import Game from "./Game";
+import GamePage from "./GamePage";
 
 const HandleMessage = ({ messageQueue }) => {
 
-    const [ direct, setDirect ] = useState('LoginPage');
+    const [ direct, setDirect ] = useState('GamePage');
     const [ isHost, setIsHost ] = useState(false);
     const [ nameList, setNameList ] = useState([]);
     const [ roomCode, setRoomCode ] = useState('');
@@ -16,8 +16,8 @@ const HandleMessage = ({ messageQueue }) => {
                 return <LoginPage/>
             case 'WaitingPage':
                 return <WaitingPage isHost={isHost} nameList={nameList} code={roomCode}/>
-            case 'Game':
-                return <Game/>
+            case 'GamePage':
+                return <GamePage/>
             default:
                 return <h2>default</h2>
         }
@@ -43,7 +43,7 @@ const HandleMessage = ({ messageQueue }) => {
                 setNameList([]);
                 break;
             case 'GAME_START':
-                setDirect('Game');
+                setDirect('GamePage');
                 break;
             default:
                 console.log(`${messageQueue}`);
