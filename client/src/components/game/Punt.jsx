@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function Boat() {
+function Punt() {
 
     const [ seat, setSeat ] = useState(['','','']);
 
@@ -11,4 +11,4 @@ function Boat() {
     );
 }
 
-export default Boat;
+export default Punt;

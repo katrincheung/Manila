@@ -1,8 +1,8 @@
 import React from 'react'
 
-const MyInput = ({ value, onClick, placeholder }) => (
+const MyInput = ({ value, onChange, placeholder }) => (
     <div>
-        <input value={value} placeholder={placeholder} onChange={onClick}/>
+        <input value={value} placeholder={placeholder} onChange={onChange}/>
     </div>
 )
 

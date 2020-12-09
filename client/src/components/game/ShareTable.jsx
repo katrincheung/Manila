@@ -28,10 +28,10 @@ function ShareTable({ sharePrices,shareNumbers, priceUp, getShare }) {
                     </tr>
                     <tr>
                         <td></td>
-                        <td><button type='button' children='Brown' onClick={() => priceUp('priceUp')}/></td>
-                        <td><button type='button' children='Blue' onClick={() => priceUp('priceUp')}/></td>
-                        <td><button type='button' children='Yellow' onClick={() => priceUp('priceUp')}/></td>
-                        <td><button type='button' children='Green' onClick={() => priceUp('priceUp')}/></td>
+                        <td><button type='button' children='PriceUp' onClick={() => priceUp('brown')}/></td>
+                        <td><button type='button' children='PriceUp' onClick={() => priceUp('blue')}/></td>
+                        <td><button type='button' children='PriceUp' onClick={() => priceUp('yellow')}/></td>
+                        <td><button type='button' children='PriceUp' onClick={() => priceUp('green')}/></td>
                     </tr>
                     <tr>
                         <td></td>

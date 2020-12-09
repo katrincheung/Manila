@@ -1,0 +1,15 @@
+.btn {
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+    outline: 0;
+    background: #1c5c91;
+    width: 50%;
+    border: 0;
+    padding: 15px;
+    color: #FFFFFF;
+    font-size: 14px;
+    cursor: pointer;
+}
+.btn:hover,.form button:active,.form button:focus {
+    background: #2776a1;
+}

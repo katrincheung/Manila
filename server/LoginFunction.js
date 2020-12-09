@@ -15,5 +15,14 @@ export default function handleLoginRequest(code, rooms, player) {
 }
 
 export function handleGameStartRequest(room) {
-    room.forEach( player => player.ws.send('GAME_START') );
+    room.forEach(player => player.ws.send('GAME_START'));
+    const playingRoom = {};
+    room.forEach((player,index) => {
+        playingRoom[player.ws] = player;
+        if(i !== room.length){
+            player.next = room[i+1];}
+        else{
+            player.next = room[0];}
+    });
+    return playingRoom;
 }

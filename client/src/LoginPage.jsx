@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import MyInput from './components/common/MyInput'
 import { socket } from './App'
 import './LoginPage.css';
+import LoginInput from "./components/Login/LoginInput";
+import Header from "./components/common/Header";
+
 
 function LoginPage() {
 
@@ -15,10 +18,10 @@ function LoginPage() {
 
     return (
         <div className="login-page">
-            <h1>Login Form</h1>
+            <Header>Login Form</Header>
             <div className="form">
-                <MyInput value={name} placeholder='NAME' onClick={e => setName(e.target.value)}/>
-                <MyInput value={code} placeholder='ROOM CODE' onClick={e => setCode(e.target.value)}/>
+                <LoginInput value={name} placeholder='NAME' onClick={e => setName(e.target.value)}/>
+                <LoginInput value={code} placeholder='ROOM CODE' onClick={e => setCode(e.target.value)}/>
                 <button type="button" onClick={handleSubmit}>Login</button>
             </div>
         </div>
