@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "ws": "^7.4.1"
+  },
+  "type": "module",
+  "dependencies": {
+    "node": "^15.3.0"
+  }
+}

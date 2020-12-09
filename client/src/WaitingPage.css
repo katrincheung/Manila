@@ -1,0 +1,36 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
+.waiting-page {
+    font-family: "Roboto", sans-serif;
+    width: 360px;
+    padding: 3% 0 0;
+    margin: auto;
+}
+.waiting-page h1 {
+    margin: 0 0 130px;
+    color: #3c4652;
+    font-size: 50px;
+}
+.waiting-page li {
+    /*list-style-type: none;*/
+    margin: 0;
+    padding: 0;
+    color: #3c3c52;
+    font-size: 25px;
+    font-family: Fantasy;
+}
+.waiting-page button {
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+    outline: 0;
+    background: #1c5c91;
+    width: 50%;
+    border: 0;
+    padding: 15px;
+    color: #FFFFFF;
+    font-size: 14px;
+    cursor: pointer;
+}
+.waiting-page button:hover,.form button:active,.form button:focus {
+    background: #2776a1;
+}
