@@ -4,14 +4,20 @@ import React from "react";
 import GamePage from "../../GamePage";
 
 
-const Page = ({ direct, isHost, nameList, roomCode }) => {
-    switch(direct) {
+const Page = (props) => {
+    switch(props.direct) {
         case 'LoginPage':
             return <LoginPage/>
         case 'WaitingPage':
-            return <WaitingPage isHost={isHost} nameList={nameList} code={roomCode}/>
+            return <WaitingPage
+                isHost={props.isHost}
+                nameList={props.nameList}
+            />
         case 'GamePage':
-            return <GamePage currentAuctionPrice={0}/>
+            return <GamePage
+                currentAuctionPrice={props.currentAuctionPrice}
+                auctionTurn={props.auctionTurn}
+            />
         default:
             return <h2>default</h2>
     }

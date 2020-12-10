@@ -3,12 +3,12 @@ import React from 'react';
 import styles from './StartButton.module.css'
 
 
-function StartButton({ isHost, code }){
+function StartButton({ isHost }){
     return(
         isHost?<button
             type="button"
             className={styles.btn}
-            onClick={() => socket.send(`GAME_START ${code}`)}>Start
+            onClick={() => socket.send(`GAME_START`)}>Start
         </button>:<div></div>
     )
 }

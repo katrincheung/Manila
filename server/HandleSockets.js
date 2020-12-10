@@ -1,24 +1,29 @@
 import handleLoginRequest, { handleGameStartRequest } from "./LoginFunction.js";
 import Player from "./Player.js";
+import {bid, passAuction} from "./GameFunction.js";
 
 let waitingRooms = {};
 let playingRooms = {};
-let inGame = true;
+let inGame = false;
 
 export default function handleSockets(ws, messageQueue) {
     let command = messageQueue[0];
+    let code = '';
+    let name = '';
     if(!inGame){
         switch(command){
             case 'NAME_INPUT':
-                let name = messageQueue[1];
-                let code = messageQueue[2];
+                name = messageQueue[1];
+                code = messageQueue[2];
                 console.log(`name = ${name} code = ${code}`);
                 const player = new Player(name, ws);
                 waitingRooms = handleLoginRequest(code, waitingRooms, player);
                 break;
             case 'GAME_START':
-                //code = waitingRooms[messageQueue[1]]
-                playingRooms[waitingRooms[messageQueue[1]]] = handleGameStartRequest(waitingRooms[messageQueue[1]]);
+                playingRooms[ws.CODE] = handleGameStartRequest(waitingRooms[ws.CODE]);
+                console.log(playingRooms)
+                inGame = true;
+                ws.send('YOUR_AUCTION');
                 break;
             default:
                 console.log(`unknownInput = ${messageQueue}`);
@@ -28,9 +33,13 @@ export default function handleSockets(ws, messageQueue) {
     else{
         switch (command){
             case 'BID':
-
+                bid(messageQueue[1], playingRooms[ws.CODE], ws);
                 break;
             case 'PASS':
+                passAuction(playingRooms[ws.CODE], ws)
+                break;
+            default:
+                console.log(`unknownInput = ${messageQueue}`);
                 break;
         }
     }

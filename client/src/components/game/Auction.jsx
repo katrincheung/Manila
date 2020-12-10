@@ -4,7 +4,7 @@ import AuctionButton from './AuctionButton'
 import BidButton from "./BidButton";
 import {socket} from "../../App";
 
-function Auction({ currentPrice, auctionPrice, addFive, addOne, minusFive, minusOne }) {
+function Auction({ code, currentPrice, auctionPrice, addFive, addOne, minusFive, minusOne }) {
 
     const bid = () => socket.send(`BID ${auctionPrice}`);
     const pass = () => socket.send(`PASS`);

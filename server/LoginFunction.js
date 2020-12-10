@@ -1,13 +1,14 @@
 export default function handleLoginRequest(code, rooms, player) {
-    console.log('handleLoginRequest');
     if(code in rooms){
-        player.ws.send(`GUEST_PLAYER ${code}`);
+        player.ws.send(`GUEST_PLAYER`);
+        player.ws.CODE = code;
         rooms[code].push(player);
         let nameList = [];
         rooms[code].forEach(player => nameList.push(player.name));
         rooms[code].forEach( player => player.ws.send(['PLAYER_LIST',nameList.join(' ')].join(' ')) );
     }else {
-        player.ws.send(`HOST_PLAYER ${code}`);
+        player.ws.send(`HOST_PLAYER`);
+        player.ws.CODE = code;
         rooms[code] = [player];
         player.ws.send(`PLAYER_LIST ${player.name}`);
     }
@@ -17,9 +18,9 @@ export default function handleLoginRequest(code, rooms, player) {
 export function handleGameStartRequest(room) {
     room.forEach(player => player.ws.send('GAME_START'));
     const playingRoom = {};
-    room.forEach((player,index) => {
-        playingRoom[player.ws] = player;
-        if(i !== room.length){
+    room.forEach((player,i) => {
+        playingRoom[player.ws.UID] = player;
+        if(i !== room.length-1){
             player.next = room[i+1];}
         else{
             player.next = room[0];}

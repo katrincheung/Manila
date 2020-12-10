@@ -4,10 +4,11 @@ import Page from "./components/HandleSocket/Page";
 
 const HandleMessage = ({ messageQueue }) => {
 
-    const [ direct, setDirect ] = useState('GamePage');
+    const [ direct, setDirect ] = useState('LoginPage');
     const [ isHost, setIsHost ] = useState(false);
     const [ nameList, setNameList ] = useState([]);
-    const [ roomCode, setRoomCode ] = useState('');
+    const [ currentAuctionPrice, setCurrentAuctionPrice ] = useState(0);
+    const [ auctionTurn, setAuctionTurn ] = useState(false);
 
     useEffect(() => {
         console.log(`whole message = ${messageQueue}`);
@@ -15,10 +16,9 @@ const HandleMessage = ({ messageQueue }) => {
         switch(command){
             case 'HOST_PLAYER':
                 setIsHost(true);
-                setRoomCode(messageQueue[1]);
                 break;
             case 'GUEST_PLAYER':
-                setRoomCode(messageQueue[1]);
+                console.log('guest');
                 break;
             case 'PLAYER_LIST':
                 setNameList(messageQueue.slice(1));
@@ -29,12 +29,21 @@ const HandleMessage = ({ messageQueue }) => {
                 setNameList([]);
                 break;
             case 'GAME_START':
-                setDirect('Game');
+                setDirect('GamePage');
+                break;
+            case 'CURRENT_PRICE':
+                setCurrentAuctionPrice(messageQueue[1]);
+                break;
+            case 'YOUR_AUCTION':
+                setAuctionTurn(true);
+                break;
+            case 'AUCTION_TURN_DONE':
+                setAuctionTurn(false);
                 break;
             default:
                 console.log(`${messageQueue}`);
                 break;}
-    },[messageQueue, setIsHost, setNameList, setDirect, setRoomCode],);
+    },[messageQueue, setIsHost, setNameList, setDirect, setCurrentAuctionPrice, setAuctionTurn],);
 
     return (
         <div>
@@ -42,7 +51,8 @@ const HandleMessage = ({ messageQueue }) => {
                 direct={direct}
                 isHost={isHost}
                 nameList={nameList}
-                roomCode={roomCode}
+                currentAuctionPrice={currentAuctionPrice}
+                auctionTurn={auctionTurn}
             />
         </div>
     );
