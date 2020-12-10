@@ -21,7 +21,6 @@ export default function handleSockets(ws, messageQueue) {
                 break;
             case 'GAME_START':
                 playingRooms[ws.CODE] = handleGameStartRequest(waitingRooms[ws.CODE]);
-                console.log(playingRooms)
                 inGame = true;
                 ws.send('YOUR_AUCTION');
                 break;

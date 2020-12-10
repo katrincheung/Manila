@@ -17,6 +17,7 @@ const Page = (props) => {
             return <GamePage
                 currentAuctionPrice={props.currentAuctionPrice}
                 auctionTurn={props.auctionTurn}
+                auctionWin={props.auctionWin}
             />
         default:
             return <h2>default</h2>

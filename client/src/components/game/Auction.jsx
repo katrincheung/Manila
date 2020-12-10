@@ -1,7 +1,7 @@
 import React from 'react';
 import './Auction.css'
-import AuctionButton from './AuctionButton'
-import BidButton from "./BidButton";
+import AuctionButton from './auction/AuctionButton'
+import BidButton from "./auction/BidButton";
 import {socket} from "../../App";
 
 function Auction({ code, currentPrice, auctionPrice, addFive, addOne, minusFive, minusOne }) {

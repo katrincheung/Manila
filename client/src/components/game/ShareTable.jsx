@@ -1,47 +1,55 @@
 import React from 'react';
+import styles from './ShareTable.module.css';
+import Table from "@material-ui/core/Table";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import TableBody from "@material-ui/core/TableBody";
+import {TableContainer} from "@material-ui/core";
+import TableButton from "./table/tableButton";
+import TCell from "./table/TCell";
 
-function ShareTable({ sharePrices,shareNumbers, priceUp, getShare }) {
 
 
+function ShareTable({ sharePrices,shareNumbers, priceUp }) {
+    
     return(
-        <div>
-            <table>
-                <thead>
-                    <tr>
-                        <th></th><th>Brown</th><th>Blue</th><th>Yellow</th><th>Green</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Prices</td>
-                        <td>{sharePrices.brown}</td>
-                        <td>{sharePrices.blue}</td>
-                        <td>{sharePrices.yellow}</td>
-                        <td>{sharePrices.green}</td>
-                    </tr>
-                    <tr>
-                        <td>Remaining</td>
-                        <td>{shareNumbers.brown}</td>
-                        <td>{shareNumbers.blue}</td>
-                        <td>{shareNumbers.yellow}</td>
-                        <td>{shareNumbers.green}</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td><button type='button' children='PriceUp' onClick={() => priceUp('brown')}/></td>
-                        <td><button type='button' children='PriceUp' onClick={() => priceUp('blue')}/></td>
-                        <td><button type='button' children='PriceUp' onClick={() => priceUp('yellow')}/></td>
-                        <td><button type='button' children='PriceUp' onClick={() => priceUp('green')}/></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td><button type='button' children='Get' onClick={() => getShare('brown')}/></td>
-                        <td><button type='button' children='Get' onClick={() => getShare('blue')}/></td>
-                        <td><button type='button' children='Get' onClick={() => getShare('yellow')}/></td>
-                        <td><button type='button' children='Get' onClick={() => getShare('green')}/></td>
-                    </tr>
-                </tbody>
-            </table>
+        <div className={styles.center}>
+            <TableContainer>
+            <Table aria-label="a dense table" className={styles.container}>
+                <TableHead>
+                    <TableRow>
+                        <TCell></TCell>
+                        <TCell>Brown</TCell>
+                        <TCell>Blue</TCell>
+                        <TCell>Yellow</TCell>
+                        <TCell>Green</TCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    <TableRow>
+                        <TCell>Prices</TCell>
+                        <TCell>{sharePrices.brown}</TCell>
+                        <TCell>{sharePrices.blue}</TCell>
+                        <TCell>{sharePrices.yellow}</TCell>
+                        <TCell>{sharePrices.green}</TCell>
+                    </TableRow>
+                    <TableRow>
+                        <TCell>Remaining</TCell>
+                        <TCell>{shareNumbers.brown}</TCell>
+                        <TCell>{shareNumbers.blue}</TCell>
+                        <TCell>{shareNumbers.yellow}</TCell>
+                        <TCell>{shareNumbers.green}</TCell>
+                    </TableRow>
+                    <TableRow>
+                        <TCell></TCell>
+                        <TCell><TableButton children='GET' onClick={() => priceUp('brown')}/></TCell>
+                        <TCell><TableButton children='GET' onClick={() => priceUp('blue')}/></TCell>
+                        <TCell><TableButton children='GET' onClick={() => priceUp('yellow')}/></TCell>
+                        <TCell><TableButton children='GET' onClick={() => priceUp('green')}/></TCell>
+                    </TableRow>
+                </TableBody>
+            </Table>
+            </TableContainer>
         </div>
     );
 }

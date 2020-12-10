@@ -1,0 +1,19 @@
+.btn {
+    color: #fff;
+    background-color: #c16e15;
+    border-radius: 5px;
+    border-color: #cea573;
+    width: 80px;
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.2);
+    outline: none;
+    transition: 0.3s all;
+    font-family: Fantasy, sans-serif;
+    font-size: 1.5rem;
+    text-shadow: 0 -2px rgba(0, 0, 0, 0.6), 0 2px rgba(255, 255, 255, 0.4);
+}
+
+.btn:hover {
+    margin-top: -2px;
+    margin-bottom: 2px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
