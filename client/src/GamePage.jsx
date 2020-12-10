@@ -33,6 +33,10 @@ function GamePage({ currentAuctionPrice, auctionTurn, auctionWin }) {
 
     const [ auction, setAuction ] = useState(currentAuctionPrice+1);
     useEffect(() => setAuction(currentAuctionPrice+1),[currentAuctionPrice])
+    useEffect(() => {
+        if(auctionWin)
+            setMoney(money-currentAuctionPrice)
+    },[auctionWin,currentAuctionPrice,setMoney])
     const addFive = () => setAuction(auction+5);
     const addOne = () => setAuction(auction+1);
     const minusFive = () => setAuction(auction-5);
