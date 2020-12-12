@@ -2,11 +2,14 @@ import React, {useEffect, useState} from 'react';
 import ShareTable from "./components/game/ShareTable";
 import Auction from "./components/game/Auction";
 import Header from "./components/common/Header";
+import {socket} from "./App";
 
 function GamePage({ currentAuctionPrice, auctionTurn, auctionWin }) {
 
     const [ money, setMoney ] = useState(30);
     const [ myShareList, setMyShareList ] = useState({'brown':0, 'blue':0, 'yellow':0, 'green':0});
+    useEffect(()=>socket.send(`UPDATE ${money} [${myShareList.brown},${myShareList.blue},${myShareList.yellow},${myShareList.green}] [${sharePrices.brown},${sharePrices.blue},${sharePrices.yellow},${sharePrices.green}] [${shareNumbers.brown},${shareNumbers.blue},${shareNumbers.yellow},${shareNumbers.green}]`)
+        ,[money, myShareList])
 
     const [ sharePrices, setSharePrices ] = useState({'brown':0, 'blue':0, 'yellow':0, 'green':0});
     const [ shareNumbers, setShareNumbers ] = useState({'brown':5, 'blue':5, 'yellow':5, 'green':5});
@@ -14,6 +17,7 @@ function GamePage({ currentAuctionPrice, auctionTurn, auctionWin }) {
         if(shareNumbers[color] > 0) {
             setShareNumbers({...shareNumbers, [color]: shareNumbers[color] - 1});
             setMyShareList({...myShareList, [color]: myShareList[color] + 1});
+            (sharePrices[color] == 0)? setMoney(money-5):setMoney(money-sharePrices[color]);
             switch (sharePrices[color]) {
                 case 5:
                     setSharePrices({...sharePrices, [color]: 10});
@@ -29,7 +33,17 @@ function GamePage({ currentAuctionPrice, auctionTurn, auctionWin }) {
                     break;
             }
         }
+        setBuyPhase(false);
     };
+    const [ buyPhase, setBuyPhase ] = useState(auctionWin);
+    useEffect(()=>{
+        if(auctionWin){
+            setBuyPhase(true);
+        }else{
+            setBuyPhase(false);
+        }
+    },[auctionWin, setBuyPhase]);
+    const [ puntPhase, setPuntPhase ] = useState(false);
 
     const [ auction, setAuction ] = useState(currentAuctionPrice+1);
     useEffect(() => setAuction(currentAuctionPrice+1),[currentAuctionPrice])
@@ -56,6 +70,7 @@ function GamePage({ currentAuctionPrice, auctionTurn, auctionWin }) {
             <h5>Current Status</h5>
             <h5>Money: {money}</h5>
             <h5>shares: {myShareList.brown} {myShareList.blue} {myShareList.yellow} {myShareList.green} </h5>
+            <h5>{buyPhase.value}</h5>
             {
                 (auctionTurn) ?
                     <Auction
@@ -68,7 +83,7 @@ function GamePage({ currentAuctionPrice, auctionTurn, auctionWin }) {
                     />:<h2>Current Price: {currentAuctionPrice}</h2>
             }
             {
-                (auctionWin) ?
+                (buyPhase) ?
                     <ShareTable sharePrices={sharePrices} shareNumbers={shareNumbers} priceUp={getShare}/>
                     : <div></div>
             }
