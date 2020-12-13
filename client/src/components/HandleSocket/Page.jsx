@@ -15,6 +15,9 @@ const Page = (props) => {
             />
         case 'GamePage':
             return <GamePage
+                players={props.players}
+                initShare={props.initShare}
+                remainShare={props.remainShare}
                 currentAuctionPrice={props.currentAuctionPrice}
                 auctionTurn={props.auctionTurn}
                 auctionWin={props.auctionWin}

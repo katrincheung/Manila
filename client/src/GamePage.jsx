@@ -3,16 +3,15 @@ import ShareTable from "./components/game/ShareTable";
 import Auction from "./components/game/Auction";
 import Header from "./components/common/Header";
 import {socket} from "./App";
+import PlayerStatusCard from "./components/game/PlayerStatusCard";
 
-function GamePage({ currentAuctionPrice, auctionTurn, auctionWin }) {
+function GamePage({ players, initShare, remainShare, currentAuctionPrice, auctionTurn, auctionWin }) {
 
     const [ money, setMoney ] = useState(30);
-    const [ myShareList, setMyShareList ] = useState({'brown':0, 'blue':0, 'yellow':0, 'green':0});
-    useEffect(()=>socket.send(`UPDATE ${money} [${myShareList.brown},${myShareList.blue},${myShareList.yellow},${myShareList.green}] [${sharePrices.brown},${sharePrices.blue},${sharePrices.yellow},${sharePrices.green}] [${shareNumbers.brown},${shareNumbers.blue},${shareNumbers.yellow},${shareNumbers.green}]`)
-        ,[money, myShareList])
+    const [ myShareList, setMyShareList ] = useState(initShare);
 
     const [ sharePrices, setSharePrices ] = useState({'brown':0, 'blue':0, 'yellow':0, 'green':0});
-    const [ shareNumbers, setShareNumbers ] = useState({'brown':5, 'blue':5, 'yellow':5, 'green':5});
+    const [ shareNumbers, setShareNumbers ] = useState(remainShare);
     const getShare = ( color ) => {
         if(shareNumbers[color] > 0) {
             setShareNumbers({...shareNumbers, [color]: shareNumbers[color] - 1});
@@ -43,6 +42,13 @@ function GamePage({ currentAuctionPrice, auctionTurn, auctionWin }) {
             setBuyPhase(false);
         }
     },[auctionWin, setBuyPhase]);
+    useEffect(()=>socket.send(`UPDATE ${money}`
+        +` [${myShareList.brown},${myShareList.blue},${myShareList.yellow},${myShareList.green}]`
+        +` [${sharePrices.brown},${sharePrices.blue},${sharePrices.yellow},${sharePrices.green}]`
+        +` [${shareNumbers.brown},${shareNumbers.blue},${shareNumbers.yellow},${shareNumbers.green}]`)
+        ,[money, myShareList, sharePrices, shareNumbers])
+
+
     const [ puntPhase, setPuntPhase ] = useState(false);
 
     const [ auction, setAuction ] = useState(currentAuctionPrice+1);
@@ -62,7 +68,8 @@ function GamePage({ currentAuctionPrice, auctionTurn, auctionWin }) {
     const [ largePilot, setLargePilot ] = useState('');//pay 5
     const [ smallPilot, setSmallPilot ] = useState('');//pay 2
     const [ insurance, setInsurance ] = useState('');//get 10 immediately, pay for punts at shipyard
-
+    console.log(players)
+    console.log(players.p1[0])
 
     return(
         <div>
@@ -70,6 +77,7 @@ function GamePage({ currentAuctionPrice, auctionTurn, auctionWin }) {
             <h5>Current Status</h5>
             <h5>Money: {money}</h5>
             <h5>shares: {myShareList.brown} {myShareList.blue} {myShareList.yellow} {myShareList.green} </h5>
+            <PlayerStatusCard name='self' money={money} shareNumber={0} />
             {
                 (auctionTurn) ?
                     <Auction
@@ -86,9 +94,6 @@ function GamePage({ currentAuctionPrice, auctionTurn, auctionWin }) {
                     <ShareTable sharePrices={sharePrices} shareNumbers={shareNumbers} priceUp={getShare}/>
                     : <div></div>
             }
-
-            {/*<ShareTable sharePrices={sharePrices} shareNumbers={shareNumbers} getShare={getShare}/>*/}
-
 
         </div>
     );

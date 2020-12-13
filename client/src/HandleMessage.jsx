@@ -7,6 +7,11 @@ const HandleMessage = ({ messageQueue }) => {
     const [ direct, setDirect ] = useState('LoginPage');
     const [ isHost, setIsHost ] = useState(false);
     const [ nameList, setNameList ] = useState([]);
+
+    const [ players, setPlayers ] = useState({'p1':[0,1], 'p2':[0,1], 'p3':[0,1]});
+    const [ initShare, setInitShare ] = useState({'brown':0, 'blue':0, 'yellow':0, 'green':0})
+    const [ remainShare, setRemainShare ] = useState({'brown':0, 'blue':0, 'yellow':0, 'green':0})
+
     const [ currentAuctionPrice, setCurrentAuctionPrice ] = useState(0);
     const [ auctionTurn, setAuctionTurn ] = useState(false);
     const [ auctionWin, setAuctionWin ] = useState(false);
@@ -36,6 +41,12 @@ const HandleMessage = ({ messageQueue }) => {
                     case 'GAME_START':
                         setDirect('GamePage');
                         setPhase('AUCTION');
+                        break;
+                    case 'START_SHARE':
+                        setInitShare({'brown':messageQueue[1], 'blue':messageQueue[2], 'yellow':messageQueue[3], 'green':messageQueue[4]})
+                        break;
+                    case 'REMAIN_SHARE':
+                        setRemainShare({'brown':parseInt(messageQueue[1],10)+2, 'blue':parseInt(messageQueue[2],10)+2, 'yellow':parseInt(messageQueue[3],10)+2, 'green':parseInt(messageQueue[4],10)+2})
                         break;
                     default:
                         console.log('login phase')
@@ -81,6 +92,9 @@ const HandleMessage = ({ messageQueue }) => {
                 direct={direct}
                 isHost={isHost}
                 nameList={nameList}
+                players={players}
+                initShare={initShare}
+                remainShare={remainShare}
                 currentAuctionPrice={currentAuctionPrice}
                 auctionTurn={auctionTurn}
                 auctionWin={auctionWin}

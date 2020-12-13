@@ -1,6 +1,8 @@
 import handleLoginRequest, { handleGameStartRequest } from "./LoginFunction.js";
 import Player from "./Player.js";
 import { bid, passAuction } from "./AuctionFunction.js";
+import { gameSetUp } from "./GameFunction.js";
+
 
 let waitingRooms = {};
 let playingRooms = {};
@@ -22,6 +24,8 @@ export default function handleSockets(ws, messageQueue) {
             case 'GAME_START':
                 playingRooms[ws.CODE] = handleGameStartRequest(waitingRooms[ws.CODE]);
                 inGame = true;
+                gameSetUp(playingRooms[ws.CODE])
+                console.log('gameSetUp done');
                 ws.send('YOUR_AUCTION');
                 break;
             default:
