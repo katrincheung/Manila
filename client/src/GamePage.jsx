@@ -70,7 +70,6 @@ function GamePage({ currentAuctionPrice, auctionTurn, auctionWin }) {
             <h5>Current Status</h5>
             <h5>Money: {money}</h5>
             <h5>shares: {myShareList.brown} {myShareList.blue} {myShareList.yellow} {myShareList.green} </h5>
-            <h5>{buyPhase.value}</h5>
             {
                 (auctionTurn) ?
                     <Auction

@@ -1,6 +1,6 @@
 import handleLoginRequest, { handleGameStartRequest } from "./LoginFunction.js";
 import Player from "./Player.js";
-import {bid, passAuction} from "./GameFunction.js";
+import { bid, passAuction } from "./AuctionFunction.js";
 
 let waitingRooms = {};
 let playingRooms = {};
@@ -36,6 +36,9 @@ export default function handleSockets(ws, messageQueue) {
                 break;
             case 'PASS':
                 passAuction(playingRooms[ws.CODE], ws)
+                break;
+            case 'UPDATE':
+                //update normal status;
                 break;
             default:
                 console.log(`unknownInput = ${messageQueue}`);

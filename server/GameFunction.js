@@ -1,27 +1,8 @@
-function getNextPlayer(room, ws){
-    // console.log(`current uid  ${ws.UID}`);
-    if(!room[ws.UID].next.pass){
-        return room[ws.UID].next;
+function update(players, ws, money, shareList, prices, remaining) {
+    let name = players[ws.uid].name;
+    for(let playerId in players){
+        if(playerId !== ws.uid){
+            players[playerId].ws.send(`UPDATE ${name} ${money} ${shareList} ${prices} ${remaining}`);
+        }
     }
-    return getNextPlayer(room, room[ws.UID].next.ws)
-}
-
-export function bid(price, room, ws){
-    ws.send(`AUCTION_TURN_DONE`);
-    for(let id in room){
-        room[id].ws.send(`CURRENT_PRICE ${price}`);
-    }
-    getNextPlayer(room, ws).ws.send(`YOUR_AUCTION`);
-}
-
-export function passAuction(room, ws){
-    room[ws.UID].pass = true;
-    ws.send(`AUCTION_TURN_DONE`);
-    const nextPlayer = getNextPlayer(room, ws);
-    if (getNextPlayer(room, nextPlayer.ws) === nextPlayer){
-        nextPlayer.ws.send(`AUCTION_WIN`);
-    }else {
-        nextPlayer.ws.send(`YOUR_AUCTION`);
-    }
-
 }
