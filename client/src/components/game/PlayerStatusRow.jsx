@@ -12,7 +12,7 @@ function PlayerStatusRow({ sharePrices,shareNumbers,myName, money, shareList, pl
             <ShareTable sharePrices={sharePrices} shareNumbers={shareNumbers}/>
             <MyStatusCard name={myName} money={money} shareList={shareList} />
             {
-                Object.entries(players).map(([name,value],key) => <div key={key}>{(name !== myName)?<PlayerStatusCard name={name} money={value[0]} shareNumber={value[1]}/>:<div></div>}</div> )
+                Object.entries(players).map(([name,value],key) => <PlayerStatusCard key={key} name={name} money={value.money} shareNumber={value.share}/> )
             }
 
         </div>

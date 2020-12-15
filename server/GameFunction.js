@@ -20,11 +20,18 @@ export function gameSetUp(players) {
     }
 }
 
-export function update(players, ws, money, shareList, prices, remaining) {
-    let name = players[ws.uid].name;
-    for(let playerId in players){
-        if(playerId !== ws.uid){
-            players[playerId].ws.send(`UPDATE ${name} ${money} ${shareList} ${prices} ${remaining}`);
+export function updateMoney(ws, money, players) {
+    for(const [uid, player] of Object.entries(players)){
+        if(player.name !== ws.NAME){
+            player.ws.send(`UPDATE_MONEY ${ws.NAME} ${money}`)
+        }
+    }
+}
+
+export function updateShare(ws, shareNum, sharePrice, remaining, players) {
+    for(const [uid, player] of Object.entries(players)){
+        if(player.name !== ws.NAME){
+            player.ws.send(`UPDATE_SHARE ${ws.NAME} ${shareNum} ${sharePrice} ${remaining}`)
         }
     }
 }

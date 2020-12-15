@@ -42,12 +42,11 @@ function GamePage({ myName, players, initShare, remainShare, currentAuctionPrice
         }
     },[auctionWin, setBuyPhase]);
     useEffect(()=>socket.send(`UPDATE_MONEY ${money}`), [money])
-    useEffect(()=>socket.send(`UPDATE_STOCK `
+    useEffect(()=>socket.send(`UPDATE_SHARE `
         +`${myShareList.brown+myShareList.blue+myShareList.yellow+myShareList.green}`
         +` [${sharePrices.brown},${sharePrices.blue},${sharePrices.yellow},${sharePrices.green}]`
         +` [${shareNumbers.brown},${shareNumbers.blue},${shareNumbers.yellow},${shareNumbers.green}]`)
         ,[myShareList])
-
 
     const [ puntPhase, setPuntPhase ] = useState(false);
 

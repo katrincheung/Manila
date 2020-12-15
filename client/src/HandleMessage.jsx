@@ -12,9 +12,13 @@ const HandleMessage = ({ message }) => {
     const [ players, setPlayers ] = useState({});
     useEffect(()=>{
         const temp={}
-        nameList.forEach(name => temp[name] = [30,2])
+        nameList.forEach(name => {
+            if(name !== myName)
+                temp[name] = {'money':30,'share':2}})
         setPlayers(temp)
     },[nameList, setPlayers])
+    console.log(players)
+
     const [ initShare, setInitShare ] = useState({'brown':0, 'blue':0, 'yellow':0, 'green':0})
     const [ remainShare, setRemainShare ] = useState({'brown':0, 'blue':0, 'yellow':0, 'green':0})
 
@@ -47,7 +51,7 @@ const HandleMessage = ({ message }) => {
                         break;
                     case 'GAME_START':
                         setDirect('GamePage');
-                        setPhase('AUCTION');
+                        setPhase('GAME');
                         break;
                     case 'START_SHARE':
                         setInitShare({'brown':parseInt(message[1],10), 'blue':parseInt(message[2],10), 'yellow':parseInt(message[3],10), 'green':parseInt(message[4],10)})
@@ -61,7 +65,7 @@ const HandleMessage = ({ message }) => {
                         break;
                 }
                 break;
-            case 'AUCTION':
+            case 'GAME':
                 switch(command){
                     case 'CURRENT_PRICE':
                         setCurrentAuctionPrice(parseInt(message[1],10));
@@ -74,17 +78,17 @@ const HandleMessage = ({ message }) => {
                         break;
                     case 'AUCTION_WIN':
                         setAuctionWin(true);
-                        // buy share
-                        // choose punt
-                        // game voyage start
+                        break;
+                    case 'UPDATE_MONEY':
+                        setPlayers({...players, [message[1]]:{...players[message[1]],['money']:parseInt(message[2],10)}})
+                        break;
+                    case 'UPDATE_SHARE':
+                        setPlayers({...players, [message[1]]:{...players[message[1]],['share']:parseInt(message[2],10)}})
                         break;
                     default:
-                        console.log('auction phase')
                         console.log(`${message}`);
                         break;
                 }
-                break;
-            case 'VOYAGE':
                 break;
             default:
                 console.log('outer most default');
