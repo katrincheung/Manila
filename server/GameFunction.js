@@ -16,7 +16,6 @@ export function gameSetUp(players) {
     }
     for(let playerId in players){
         players[playerId].ws.send(`REMAIN_SHARE ${remain.join(' ')}`);
-        players[playerId].ws.send(`GAME_START ${players[playerId].name}`);
     }
 }
 

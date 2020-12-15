@@ -16,6 +16,7 @@ export default function handleLoginRequest(code, rooms, player) {
 export function handleGameStartRequest(room) {
     const playingRoom = {};
     room.forEach((player,i) => {
+        player.ws.send(`GAME_START`);
         playingRoom[player.ws.UID] = player;
         if(i !== room.length-1){
             player.next = room[i+1];}

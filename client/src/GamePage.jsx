@@ -4,6 +4,7 @@ import Auction from "./components/game/Auction";
 import Header from "./components/common/Header";
 import {socket} from "./App";
 import PlayerStatusRow from "./components/game/PlayerStatusRow";
+import MyStatusCard from "./components/game/MyStatusCard";
 
 function GamePage({ myName, players, initShare, remainShare, currentAuctionPrice, auctionTurn, auctionWin }) {
     const [ money, setMoney ] = useState(30);
@@ -48,8 +49,6 @@ function GamePage({ myName, players, initShare, remainShare, currentAuctionPrice
         +` [${shareNumbers.brown},${shareNumbers.blue},${shareNumbers.yellow},${shareNumbers.green}]`)
         ,[myShareList])
 
-    const [ puntPhase, setPuntPhase ] = useState(false);
-
     const [ auction, setAuction ] = useState(currentAuctionPrice+1);
     useEffect(() => setAuction(currentAuctionPrice+1),[currentAuctionPrice])
     useEffect(() => {
@@ -61,12 +60,12 @@ function GamePage({ myName, players, initShare, remainShare, currentAuctionPrice
     const minusFive = () => setAuction(auction-5);
     const minusOne = () => setAuction(auction-1);
 
-    const [ port, setPort ] = useState({'A':'', 'B':'', 'C':''});//punts successfully depart, 4->6, 3->8, 2->15
-    const [ shipyard, setShipyard ] = useState({'A':'', 'B':'', 'C':''});//punts fail to depart, 4->6, 3->8, 2->15
-    const [ pirateSpace, setPirateSpace ] = useState([]);//pay 5 each
-    const [ largePilot, setLargePilot ] = useState('');//pay 5
-    const [ smallPilot, setSmallPilot ] = useState('');//pay 2
-    const [ insurance, setInsurance ] = useState('');//get 10 immediately, pay for punts at shipyard
+    // const [ port, setPort ] = useState({'A':'', 'B':'', 'C':''});//punts successfully depart, 4->6, 3->8, 2->15
+    // const [ shipyard, setShipyard ] = useState({'A':'', 'B':'', 'C':''});//punts fail to depart, 4->6, 3->8, 2->15
+    // const [ pirateSpace, setPirateSpace ] = useState([]);//pay 5 each
+    // const [ largePilot, setLargePilot ] = useState('');//pay 5
+    // const [ smallPilot, setSmallPilot ] = useState('');//pay 2
+    // const [ insurance, setInsurance ] = useState('');//get 10 immediately, pay for punts at shipyard
 
     return(
         <div>

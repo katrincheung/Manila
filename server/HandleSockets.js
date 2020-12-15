@@ -12,7 +12,7 @@ export default function handleSockets(ws, message) {
     let command = message[0];
     if(!inGame){
         switch(command){
-            case 'NAME_INPUT':
+            case 'LOGIN':
                 ws.NAME = message[1];
                 ws.CODE = message[2];
                 const player = new Player(ws.NAME, ws);

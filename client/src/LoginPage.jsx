@@ -11,7 +11,7 @@ function LoginPage() {
     const [ code, setCode ] = useState("");
 
     const handleSubmit = () => {
-        socket.send(`NAME_INPUT ${name} ${code}`);
+        socket.send(`LOGIN ${name} ${code}`);
     }
 
 
