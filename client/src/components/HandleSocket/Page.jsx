@@ -15,6 +15,7 @@ const Page = (props) => {
             />
         case 'GamePage':
             return <GamePage
+                myName={props.myName}
                 players={props.players}
                 initShare={props.initShare}
                 remainShare={props.remainShare}

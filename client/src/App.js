@@ -17,7 +17,7 @@ function App() {
 
     return (
         <div className="App">
-        <HandleMessage messageQueue={messageQueue.split(' ')}/>
+        <HandleMessage message={messageQueue.split(' ')}/>
 
         </div>
     );

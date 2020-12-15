@@ -1,14 +1,20 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Page from "./components/HandleSocket/Page";
 
 
-const HandleMessage = ({ messageQueue }) => {
+const HandleMessage = ({ message }) => {
 
     const [ direct, setDirect ] = useState('LoginPage');
     const [ isHost, setIsHost ] = useState(false);
+    const [ myName, setMyName ] = useState('');
     const [ nameList, setNameList ] = useState([]);
 
-    const [ players, setPlayers ] = useState({'p1':[0,1], 'p2':[0,1], 'p3':[0,1]});
+    const [ players, setPlayers ] = useState({});
+    useEffect(()=>{
+        const temp={}
+        nameList.forEach(name => temp[name] = [30,2])
+        setPlayers(temp)
+    },[nameList, setPlayers])
     const [ initShare, setInitShare ] = useState({'brown':0, 'blue':0, 'yellow':0, 'green':0})
     const [ remainShare, setRemainShare ] = useState({'brown':0, 'blue':0, 'yellow':0, 'green':0})
 
@@ -19,19 +25,20 @@ const HandleMessage = ({ messageQueue }) => {
     const [ phase, setPhase ] = useState('LOGIN');
 
     useEffect(() => {
-        console.log(`whole message = ${messageQueue}`);
-        const command = messageQueue[0];
+        console.log(`whole message = ${message}`);
+        const command = message[0];
         switch (phase){
             case 'LOGIN':
                 switch(command){
                     case 'HOST_PLAYER':
                         setIsHost(true);
+                        setMyName(message[1])
                         break;
                     case 'GUEST_PLAYER':
-                        console.log('guest');
+                        setMyName(message[1])
                         break;
                     case 'PLAYER_LIST':
-                        setNameList(messageQueue.slice(1));
+                        setNameList(message.slice(1));
                         setDirect('WaitingPage');
                         break;
                     case 'HOST_DISCONNECTED':
@@ -43,21 +50,21 @@ const HandleMessage = ({ messageQueue }) => {
                         setPhase('AUCTION');
                         break;
                     case 'START_SHARE':
-                        setInitShare({'brown':messageQueue[1], 'blue':messageQueue[2], 'yellow':messageQueue[3], 'green':messageQueue[4]})
+                        setInitShare({'brown':parseInt(message[1],10), 'blue':parseInt(message[2],10), 'yellow':parseInt(message[3],10), 'green':parseInt(message[4],10)})
                         break;
                     case 'REMAIN_SHARE':
-                        setRemainShare({'brown':parseInt(messageQueue[1],10)+2, 'blue':parseInt(messageQueue[2],10)+2, 'yellow':parseInt(messageQueue[3],10)+2, 'green':parseInt(messageQueue[4],10)+2})
+                        setRemainShare({'brown':parseInt(message[1],10)+2, 'blue':parseInt(message[2],10)+2, 'yellow':parseInt(message[3],10)+2, 'green':parseInt(message[4],10)+2})
                         break;
                     default:
                         console.log('login phase')
-                        console.log(`${messageQueue}`);
+                        console.log(`${message}`);
                         break;
                 }
                 break;
             case 'AUCTION':
                 switch(command){
                     case 'CURRENT_PRICE':
-                        setCurrentAuctionPrice(parseInt(messageQueue[1],10));
+                        setCurrentAuctionPrice(parseInt(message[1],10));
                         break;
                     case 'YOUR_AUCTION':
                         setAuctionTurn(true);
@@ -73,7 +80,7 @@ const HandleMessage = ({ messageQueue }) => {
                         break;
                     default:
                         console.log('auction phase')
-                        console.log(`${messageQueue}`);
+                        console.log(`${message}`);
                         break;
                 }
                 break;
@@ -84,11 +91,12 @@ const HandleMessage = ({ messageQueue }) => {
 
         }
 
-    },[messageQueue, setIsHost, setNameList, setDirect, setCurrentAuctionPrice, setAuctionTurn],);
-    console.log('render');
+    },[message, setIsHost, setNameList, setDirect, setCurrentAuctionPrice, setAuctionTurn],);
+
     return (
         <div>
             <Page
+                myName={myName}
                 direct={direct}
                 isHost={isHost}
                 nameList={nameList}

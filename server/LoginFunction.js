@@ -1,14 +1,12 @@
 export default function handleLoginRequest(code, rooms, player) {
     if(code in rooms){
-        player.ws.send(`GUEST_PLAYER`);
-        player.ws.CODE = code;
+        player.ws.send(`GUEST_PLAYER ${player.name}`);
         rooms[code].push(player);
         let nameList = [];
         rooms[code].forEach(player => nameList.push(player.name));
         rooms[code].forEach( player => player.ws.send(['PLAYER_LIST',nameList.join(' ')].join(' ')) );
     }else {
-        player.ws.send(`HOST_PLAYER`);
-        player.ws.CODE = code;
+        player.ws.send(`HOST_PLAYER ${player.name}`);
         rooms[code] = [player];
         player.ws.send(`PLAYER_LIST ${player.name}`);
     }

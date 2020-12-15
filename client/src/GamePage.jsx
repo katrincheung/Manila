@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import ShareTable from "./components/game/ShareTable";
+import AuctionShareTable from "./components/game/AuctionShareTable";
 import Auction from "./components/game/Auction";
 import Header from "./components/common/Header";
 import {socket} from "./App";
-import PlayerStatusCard from "./components/game/PlayerStatusCard";
+import PlayerStatusRow from "./components/game/PlayerStatusRow";
 
-function GamePage({ players, initShare, remainShare, currentAuctionPrice, auctionTurn, auctionWin }) {
-
+function GamePage({ myName, players, initShare, remainShare, currentAuctionPrice, auctionTurn, auctionWin }) {
     const [ money, setMoney ] = useState(30);
     const [ myShareList, setMyShareList ] = useState(initShare);
 
@@ -42,11 +41,12 @@ function GamePage({ players, initShare, remainShare, currentAuctionPrice, auctio
             setBuyPhase(false);
         }
     },[auctionWin, setBuyPhase]);
-    useEffect(()=>socket.send(`UPDATE ${money}`
-        +` [${myShareList.brown},${myShareList.blue},${myShareList.yellow},${myShareList.green}]`
+    useEffect(()=>socket.send(`UPDATE_MONEY ${money}`), [money])
+    useEffect(()=>socket.send(`UPDATE_STOCK `
+        +`${myShareList.brown+myShareList.blue+myShareList.yellow+myShareList.green}`
         +` [${sharePrices.brown},${sharePrices.blue},${sharePrices.yellow},${sharePrices.green}]`
         +` [${shareNumbers.brown},${shareNumbers.blue},${shareNumbers.yellow},${shareNumbers.green}]`)
-        ,[money, myShareList, sharePrices, shareNumbers])
+        ,[myShareList])
 
 
     const [ puntPhase, setPuntPhase ] = useState(false);
@@ -68,16 +68,12 @@ function GamePage({ players, initShare, remainShare, currentAuctionPrice, auctio
     const [ largePilot, setLargePilot ] = useState('');//pay 5
     const [ smallPilot, setSmallPilot ] = useState('');//pay 2
     const [ insurance, setInsurance ] = useState('');//get 10 immediately, pay for punts at shipyard
-    console.log(players)
-    console.log(players.p1[0])
 
     return(
         <div>
             <Header>Game Page</Header>
-            <h5>Current Status</h5>
-            <h5>Money: {money}</h5>
-            <h5>shares: {myShareList.brown} {myShareList.blue} {myShareList.yellow} {myShareList.green} </h5>
-            <PlayerStatusCard name='self' money={money} shareNumber={0} />
+            <h5>Remain: {shareNumbers.brown} {shareNumbers.blue} {shareNumbers.yellow} {shareNumbers.green}</h5>
+            <PlayerStatusRow myName={myName} money={money} shareList={myShareList} players={players}/>
             {
                 (auctionTurn) ?
                     <Auction
@@ -91,7 +87,7 @@ function GamePage({ players, initShare, remainShare, currentAuctionPrice, auctio
             }
             {
                 (buyPhase) ?
-                    <ShareTable sharePrices={sharePrices} shareNumbers={shareNumbers} priceUp={getShare}/>
+                    <AuctionShareTable sharePrices={sharePrices} shareNumbers={shareNumbers} priceUp={getShare}/>
                     : <div></div>
             }
 

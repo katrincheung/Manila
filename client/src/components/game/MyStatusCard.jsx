@@ -7,7 +7,6 @@ import Typography from '@material-ui/core/Typography';
 const useStyles = makeStyles({
     root: {
         maxWidth: 200,
-        height: 133
     },
     bullet: {
         display: 'inline-block',
@@ -18,11 +17,11 @@ const useStyles = makeStyles({
         fontSize: 14,
     },
     pos: {
-        marginBottom: 5,
+        marginBottom: 12,
     },
 });
 
-function PlayerStatusCard({ name, money, shareNumber }) {
+function MyStatusCard({ name, money, shareList }) {
     const classes = useStyles();
 
     return (
@@ -34,11 +33,13 @@ function PlayerStatusCard({ name, money, shareNumber }) {
                 <Typography variant="body2" component="p">
                     money: {money}
                     <br />
-                    shares: {shareNumber}
+                    Brown: {shareList.brown} Blue:{shareList.blue}
+                    <br />
+                    Yellow: {shareList.yellow} Green:{shareList.green}
                 </Typography>
             </CardContent>
         </Card>
     );
 }
 
-export default PlayerStatusCard;
+export default MyStatusCard;

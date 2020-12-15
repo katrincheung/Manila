@@ -8,7 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Container from "@material-ui/core/Container";
-import styles from './components/game/ShareTable.module.css'
+import styles from './components/game/AuctionShareTable.module.css'
 
 function createData(type, brown, blue, yellow, green) {
     return { type, brown, blue, yellow, green };

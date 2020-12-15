@@ -8,18 +8,15 @@ let waitingRooms = {};
 let playingRooms = {};
 let inGame = false;
 
-export default function handleSockets(ws, messageQueue) {
-    let command = messageQueue[0];
-    let code = '';
-    let name = '';
+export default function handleSockets(ws, message) {
+    let command = message[0];
     if(!inGame){
         switch(command){
             case 'NAME_INPUT':
-                name = messageQueue[1];
-                code = messageQueue[2];
-                console.log(`name = ${name} code = ${code}`);
-                const player = new Player(name, ws);
-                waitingRooms = handleLoginRequest(code, waitingRooms, player);
+                ws.NAME = message[1];
+                ws.CODE = message[2];
+                const player = new Player(ws.NAME, ws);
+                waitingRooms = handleLoginRequest(ws.CODE, waitingRooms, player);
                 break;
             case 'GAME_START':
                 playingRooms[ws.CODE] = handleGameStartRequest(waitingRooms[ws.CODE]);
@@ -29,14 +26,14 @@ export default function handleSockets(ws, messageQueue) {
                 ws.send('YOUR_AUCTION');
                 break;
             default:
-                console.log(`unknownInput = ${messageQueue}`);
+                console.log(`unknownInput = ${message}`);
                 break;
         }
     }
     else{
         switch (command){
             case 'BID':
-                bid(messageQueue[1], playingRooms[ws.CODE], ws);
+                bid(message[1], playingRooms[ws.CODE], ws);
                 break;
             case 'PASS':
                 passAuction(playingRooms[ws.CODE], ws)
@@ -45,7 +42,7 @@ export default function handleSockets(ws, messageQueue) {
                 //update normal status;
                 break;
             default:
-                console.log(`unknownInput = ${messageQueue}`);
+                console.log(`unknownInput = ${message}`);
                 break;
         }
     }
