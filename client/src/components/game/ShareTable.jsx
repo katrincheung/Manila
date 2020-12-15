@@ -4,8 +4,9 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableBody from "@material-ui/core/TableBody";
 import {TableContainer} from "@material-ui/core";
+import TableCell from "@material-ui/core/TableCell";
+import Paper from "@material-ui/core/Paper";
 
-import TCell from "./auction/table/TCell";
 
 
 
@@ -13,31 +14,31 @@ function ShareTable({ sharePrices,shareNumbers }) {
 
     return(
         <div >
-            <TableContainer>
+            <TableContainer component={Paper}>
                 <Table aria-label="a dense table">
                     <TableHead>
                         <TableRow>
-                            <TCell></TCell>
-                            <TCell>Brown</TCell>
-                            <TCell>Blue</TCell>
-                            <TCell>Yellow</TCell>
-                            <TCell>Green</TCell>
+                            <TableCell></TableCell>
+                            <TableCell>Brown</TableCell>
+                            <TableCell>Blue</TableCell>
+                            <TableCell>Yellow</TableCell>
+                            <TableCell>Green</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         <TableRow>
-                            <TCell>Prices</TCell>
-                            <TCell>{sharePrices.brown}</TCell>
-                            <TCell>{sharePrices.blue}</TCell>
-                            <TCell>{sharePrices.yellow}</TCell>
-                            <TCell>{sharePrices.green}</TCell>
+                            <TableCell>Prices</TableCell>
+                            <TableCell>{sharePrices.brown}</TableCell>
+                            <TableCell>{sharePrices.blue}</TableCell>
+                            <TableCell>{sharePrices.yellow}</TableCell>
+                            <TableCell>{sharePrices.green}</TableCell>
                         </TableRow>
                         <TableRow>
-                            <TCell>Remaining</TCell>
-                            <TCell>{shareNumbers.brown}</TCell>
-                            <TCell>{shareNumbers.blue}</TCell>
-                            <TCell>{shareNumbers.yellow}</TCell>
-                            <TCell>{shareNumbers.green}</TCell>
+                            <TableCell>Remaining</TableCell>
+                            <TableCell>{shareNumbers.brown}</TableCell>
+                            <TableCell>{shareNumbers.blue}</TableCell>
+                            <TableCell>{shareNumbers.yellow}</TableCell>
+                            <TableCell>{shareNumbers.green}</TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>

@@ -72,7 +72,6 @@ function GamePage({ myName, players, initShare, remainShare, currentAuctionPrice
     return(
         <div>
             <Header>Game Page</Header>
-            <h5>Remain: {shareNumbers.brown} {shareNumbers.blue} {shareNumbers.yellow} {shareNumbers.green}</h5>
             <PlayerStatusRow sharePrices={sharePrices} shareNumbers={shareNumbers} myName={myName} money={money} shareList={myShareList} players={players}/>
             {
                 (auctionTurn) ?
