@@ -1,7 +1,7 @@
 import './App.css';
 import React, {useEffect, useState} from 'react';
 import HandleMessage from "./HandleMessage";
-import BasicTable from "./table";
+
 
 export const socket = new WebSocket('ws://localhost:8080')
 
@@ -18,7 +18,6 @@ function App() {
     return (
         <div className="App">
         <HandleMessage message={messageQueue.split(' ')}/>
-
         </div>
     );
 }

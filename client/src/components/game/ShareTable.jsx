@@ -1,21 +1,20 @@
 import React from 'react';
-import styles from './AuctionShareTable.module.css';
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableBody from "@material-ui/core/TableBody";
 import {TableContainer} from "@material-ui/core";
 
-import TCell from "./table/TCell";
+import TCell from "./auction/table/TCell";
 
 
 
-function AuctionShareTable({ sharePrices,shareNumbers, priceUp }) {
+function ShareTable({ sharePrices,shareNumbers }) {
 
     return(
-        <div className={styles.center}>
+        <div >
             <TableContainer>
-                <Table aria-label="a dense table" className={styles.container}>
+                <Table aria-label="a dense table">
                     <TableHead>
                         <TableRow>
                             <TCell></TCell>
@@ -47,4 +46,4 @@ function AuctionShareTable({ sharePrices,shareNumbers, priceUp }) {
     );
 }
 
-export default AuctionShareTable;
+export default ShareTable;

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import AuctionShareTable from "./components/game/AuctionShareTable";
+import AuctionShareTable from "./components/game/auction/AuctionShareTable";
 import Auction from "./components/game/Auction";
 import Header from "./components/common/Header";
 import {socket} from "./App";
@@ -73,7 +73,7 @@ function GamePage({ myName, players, initShare, remainShare, currentAuctionPrice
         <div>
             <Header>Game Page</Header>
             <h5>Remain: {shareNumbers.brown} {shareNumbers.blue} {shareNumbers.yellow} {shareNumbers.green}</h5>
-            <PlayerStatusRow myName={myName} money={money} shareList={myShareList} players={players}/>
+            <PlayerStatusRow sharePrices={sharePrices} shareNumbers={shareNumbers} myName={myName} money={money} shareList={myShareList} players={players}/>
             {
                 (auctionTurn) ?
                     <Auction
