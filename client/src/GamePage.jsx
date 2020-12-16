@@ -6,14 +6,18 @@ import {socket} from "./App";
 import PlayerStatusRow from "./components/game/PlayerStatusRow";
 import MyStatusCard from "./components/game/MyStatusCard";
 
-function GamePage({ myName, players, initShare, remainShare, currentAuctionPrice, auctionTurn, auctionWin }) {
+function GamePage({ myName, players, initShare, remainShare, globalSharePrices, currentAuctionPrice, auctionTurn, auctionWin }) {
     const [ money, setMoney ] = useState(30);
     const [ myShareList, setMyShareList ] = useState(initShare);
 
     const [ sharePrices, setSharePrices ] = useState({'brown':0, 'blue':0, 'yellow':0, 'green':0});
+    useEffect(()=>setSharePrices(globalSharePrices), [globalSharePrices])
     const [ shareNumbers, setShareNumbers ] = useState(remainShare);
+    useEffect(()=>setShareNumbers(remainShare),[remainShare])
+
     const getShare = ( color ) => {
         if(shareNumbers[color] > 0) {
+            socket.send(`UPDATE_SHARE_NUMBER ${color}`)
             setShareNumbers({...shareNumbers, [color]: shareNumbers[color] - 1});
             setMyShareList({...myShareList, [color]: myShareList[color] + 1});
             (sharePrices[color] == 0)? setMoney(money-5):setMoney(money-sharePrices[color]);
@@ -34,6 +38,7 @@ function GamePage({ myName, players, initShare, remainShare, currentAuctionPrice
         }
         setBuyPhase(false);
     };
+
     const [ buyPhase, setBuyPhase ] = useState(auctionWin);
     useEffect(()=>{
         if(auctionWin){
@@ -43,11 +48,8 @@ function GamePage({ myName, players, initShare, remainShare, currentAuctionPrice
         }
     },[auctionWin, setBuyPhase]);
     useEffect(()=>socket.send(`UPDATE_MONEY ${money}`), [money])
-    useEffect(()=>socket.send(`UPDATE_SHARE `
-        +`${myShareList.brown+myShareList.blue+myShareList.yellow+myShareList.green}`
-        +` [${sharePrices.brown},${sharePrices.blue},${sharePrices.yellow},${sharePrices.green}]`
-        +` [${shareNumbers.brown},${shareNumbers.blue},${shareNumbers.yellow},${shareNumbers.green}]`)
-        ,[myShareList])
+    useEffect(()=>socket.send(`UPDATE_PLAYER_SHARE ${myShareList.brown+myShareList.blue+myShareList.yellow+myShareList.green}`),[myShareList])
+    useEffect(()=>socket.send(`UPDATE_GLOBAL_SHARE_PRICE ${sharePrices.brown} ${sharePrices.blue} ${sharePrices.yellow} ${sharePrices.green}`),[sharePrices])
 
     const [ auction, setAuction ] = useState(currentAuctionPrice+1);
     useEffect(() => setAuction(currentAuctionPrice+1),[currentAuctionPrice])

@@ -27,10 +27,24 @@ export function updateMoney(ws, money, players) {
     }
 }
 
-export function updateShare(ws, shareNum, sharePrice, remaining, players) {
+export function updatePlayerShare(ws, shareNum, players) {
     for(const [uid, player] of Object.entries(players)){
         if(player.name !== ws.NAME){
-            player.ws.send(`UPDATE_SHARE ${ws.NAME} ${shareNum} ${sharePrice} ${remaining}`)
+            player.ws.send(`UPDATE_PLAYER_SHARE ${ws.NAME} ${shareNum}`)
         }
+    }
+}
+
+export function updateShareNumber(ws, color, players) {
+    for(const [uid, player] of Object.entries(players)){
+        if(player.name !== ws.NAME){
+            player.ws.send(`UPDATE_SHARE_NUMBER ${color}`)
+        }
+    }
+}
+
+export function updateGlobalSharePrice(ws, brown, blue, yellow, green, players) {
+    for(const [uid, player] of Object.entries(players)){
+        player.ws.send(`UPDATE_GLOBAL_SHARE_PRICE ${brown} ${blue} ${yellow} ${green}`)
     }
 }
