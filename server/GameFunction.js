@@ -44,8 +44,8 @@ export function updateShareNumber(ws, color, players) {
     }
 }
 
-export function updateGlobalSharePrice(ws, brown, blue, yellow, green, players) {
+export function updateSharePrice(ws, color, price, players) {
     for(const [uid, player] of Object.entries(players)){
-        player.ws.send(`UPDATE_GLOBAL_SHARE_PRICE ${brown} ${blue} ${yellow} ${green}`)
+        player.ws.send(`UPDATE_SHARE_PRICE ${color} ${price}`)
     }
 }

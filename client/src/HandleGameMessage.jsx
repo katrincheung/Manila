@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import Page from "./components/HandleSocket/Page";
 import GamePage from "./GamePage";
 
 
 const HandleGameMessage = ({ message, playerList, myName }) => {
-
 
     const [ players, setPlayers ] = useState(playerList);
     const [ initShare, setInitShare ] = useState({})
@@ -39,16 +37,16 @@ const HandleGameMessage = ({ message, playerList, myName }) => {
                     setBuyPhase(true);
                     break;
                 case 'UPDATE_MONEY':
-                    setPlayers({...players, [message[1]]:{...players[message[1]],['money']:parseInt(message[2],10)}})
+                    setPlayers({...players, [message[1]]:{...players[message[1]],['money']:parseInt(message[2],10)}});
                     break;
                 case 'UPDATE_PLAYER_SHARE':
-                    setPlayers({...players, [message[1]]:{...players[message[1]],['share']:parseInt(message[2],10)}})
+                    setPlayers({...players, [message[1]]:{...players[message[1]],['share']:parseInt(message[2],10)}});
                     break;
                 case 'UPDATE_SHARE_NUMBER':
-                    setRemainShare({...remainShare, [message[1]]:remainShare[message[1]]-1})
+                    setRemainShare({...remainShare, [message[1]]:remainShare[message[1]]-1});
                     break;
-                case 'UPDATE_GLOBAL_SHARE_PRICE':
-                    setSharePrices({'brown':parseInt(message[1]), 'blue':parseInt(message[2]), 'yellow':parseInt(message[3]), 'green':parseInt(message[4])})
+                case 'UPDATE_SHARE_PRICE':
+                    setSharePrices({...sharePrices, [message[1]]:message[2]});
                     break;
                 case 'BUY_DONE':
                     setBuyPhase(false);
@@ -72,7 +70,7 @@ const HandleGameMessage = ({ message, playerList, myName }) => {
                         players={players}
                         initShare={initShare}
                         remainShare={remainShare}
-                        globalSharePrices={sharePrices}
+                        sharePrices={sharePrices}
                         currentAuctionPrice={currentAuctionPrice}
                         auctionTurn={auctionTurn}
                         buyPhase={buyPhase}

@@ -6,44 +6,37 @@ import {socket} from "./App";
 import PlayerStatusRow from "./components/game/PlayerStatusRow";
 import GameBoard from "./components/game/GameBoard";
 
-function GamePage({ myName, players, initShare, remainShare, globalSharePrices, currentAuctionPrice, auctionTurn, buyPhase, gamePhase }) {
+function GamePage({ myName, players, initShare, remainShare, sharePrices, currentAuctionPrice, auctionTurn, buyPhase, gamePhase }) {
     const [ money, setMoney ] = useState(30);
     useEffect(()=>socket.send(`UPDATE_MONEY ${money}`), [money])
     const [ myShareList, setMyShareList ] = useState(initShare);
     useEffect(()=>socket.send(`UPDATE_PLAYER_SHARE ${myShareList.brown+myShareList.blue+myShareList.yellow+myShareList.green}`),[myShareList])
-
-    const [ sharePrices, setSharePrices ] = useState({'brown':0, 'blue':0, 'yellow':0, 'green':0});
-    useEffect(()=>setSharePrices(globalSharePrices), [globalSharePrices])
-    useEffect(()=>socket.send(`UPDATE_GLOBAL_SHARE_PRICE ${sharePrices.brown} ${sharePrices.blue} ${sharePrices.yellow} ${sharePrices.green}`),[sharePrices])
-    const [ shareNumbers, setShareNumbers ] = useState(remainShare);
-    useEffect(()=>setShareNumbers(remainShare),[remainShare])
 
     const [ auction, setAuction ] = useState(currentAuctionPrice+1);
     useEffect(() => setAuction(currentAuctionPrice+1),[currentAuctionPrice])
     useEffect(() => {
         if(buyPhase)
             setMoney(money-currentAuctionPrice)
-    },[buyPhase,currentAuctionPrice,setMoney])
+    },[buyPhase, currentAuctionPrice, setMoney])
     const addValue = val => setAuction(auction+val);
 
     const buyShare = ( color ) => {
-        if(shareNumbers[color] > 0) {
+        if(remainShare[color] > 0) {
             socket.send(`UPDATE_SHARE_NUMBER ${color}`)
-            setShareNumbers({...shareNumbers, [color]: shareNumbers[color] - 1});
             setMyShareList({...myShareList, [color]: myShareList[color] + 1});
-            (sharePrices[color] == 0)? setMoney(money-5):setMoney(money-sharePrices[color]);
+            (sharePrices[color] === 0)? setMoney(money-5):setMoney(money-sharePrices[color]);
             switch (sharePrices[color]) {
                 case 5:
-                    setSharePrices({...sharePrices, [color]: 10});
+                    socket.send(`UPDATE_SHARE_PRICE ${color} 10`)
                     break;
                 case 10:
-                    setSharePrices({...sharePrices, [color]: 20});
+                    socket.send(`UPDATE_SHARE_PRICE ${color} 20`)
                     break;
                 case 20:
-                    setSharePrices({...sharePrices, [color]: 30});
+                    socket.send(`UPDATE_SHARE_PRICE ${color} 30`)
                     break;
                 default:
-                    setSharePrices({...sharePrices, [color]: 5});
+                    socket.send(`UPDATE_SHARE_PRICE ${color} 5`)
                     break;
             }
         }
@@ -59,7 +52,7 @@ function GamePage({ myName, players, initShare, remainShare, globalSharePrices, 
     return(
         <div>
             <Header>Game Page</Header>
-            <PlayerStatusRow sharePrices={sharePrices} shareNumbers={shareNumbers} myName={myName} money={money} shareList={myShareList} players={players}/>
+            <PlayerStatusRow sharePrices={sharePrices} shareNumbers={remainShare} myName={myName} money={money} shareList={myShareList} players={players}/>
             {
                 (auctionTurn) ?
                     <Auction
@@ -70,7 +63,7 @@ function GamePage({ myName, players, initShare, remainShare, globalSharePrices, 
             }
             {
                 (buyPhase) ?
-                    <AuctionShareTable sharePrices={sharePrices} shareNumbers={shareNumbers} priceUp={buyShare}/>
+                    <AuctionShareTable sharePrices={sharePrices} shareNumbers={remainShare} priceUp={buyShare}/>
                     : <div></div>
             }
             {
