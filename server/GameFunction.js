@@ -37,8 +37,9 @@ export function updatePlayerShare(ws, shareNum, players) {
 
 export function updateShareNumber(ws, color, players) {
     for(const [uid, player] of Object.entries(players)){
+        player.ws.send('BUY_DONE');
         if(player.name !== ws.NAME){
-            player.ws.send(`UPDATE_SHARE_NUMBER ${color}`)
+            player.ws.send(`UPDATE_SHARE_NUMBER ${color}`);
         }
     }
 }

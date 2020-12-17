@@ -13,7 +13,8 @@ const HandleGameMessage = ({ message, playerList, myName }) => {
 
     const [ currentAuctionPrice, setCurrentAuctionPrice ] = useState(0);
     const [ auctionTurn, setAuctionTurn ] = useState(false);
-    const [ auctionWin, setAuctionWin ] = useState(false);
+    const [ buyPhase, setBuyPhase ] = useState(false);
+    const [ gamePhase, setGamePhase ] = useState(false);
 
     useEffect(() => {
         console.log(`whole message = ${message}`);
@@ -35,7 +36,7 @@ const HandleGameMessage = ({ message, playerList, myName }) => {
                     setAuctionTurn(false);
                     break;
                 case 'AUCTION_WIN':
-                    setAuctionWin(true);
+                    setBuyPhase(true);
                     break;
                 case 'UPDATE_MONEY':
                     setPlayers({...players, [message[1]]:{...players[message[1]],['money']:parseInt(message[2],10)}})
@@ -48,6 +49,10 @@ const HandleGameMessage = ({ message, playerList, myName }) => {
                     break;
                 case 'UPDATE_GLOBAL_SHARE_PRICE':
                     setSharePrices({'brown':parseInt(message[1]), 'blue':parseInt(message[2]), 'yellow':parseInt(message[3]), 'green':parseInt(message[4])})
+                    break;
+                case 'BUY_DONE':
+                    setBuyPhase(false);
+                    setGamePhase(true);
                     break;
                 default:
                     console.log(`${message}`);
@@ -70,7 +75,8 @@ const HandleGameMessage = ({ message, playerList, myName }) => {
                         globalSharePrices={sharePrices}
                         currentAuctionPrice={currentAuctionPrice}
                         auctionTurn={auctionTurn}
-                        auctionWin={auctionWin}
+                        buyPhase={buyPhase}
+                        gamePhase={gamePhase}
                     />:<h4>waiting server initialise</h4>
             }
 
