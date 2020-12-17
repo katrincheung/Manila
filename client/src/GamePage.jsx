@@ -4,7 +4,7 @@ import Auction from "./components/game/Auction";
 import Header from "./components/common/Header";
 import {socket} from "./App";
 import PlayerStatusRow from "./components/game/PlayerStatusRow";
-import MyStatusCard from "./components/game/MyStatusCard";
+import GameBoard from "./components/game/GameBoard";
 
 function GamePage({ myName, players, initShare, remainShare, globalSharePrices, currentAuctionPrice, auctionTurn, auctionWin }) {
     const [ money, setMoney ] = useState(30);
@@ -41,6 +41,7 @@ function GamePage({ myName, players, initShare, remainShare, globalSharePrices, 
             }
         }
         setBuyPhase(false);
+        setGamePhase(true);
     };
     useEffect(()=>{
         if(auctionWin){
@@ -56,8 +57,9 @@ function GamePage({ myName, players, initShare, remainShare, globalSharePrices, 
         if(auctionWin)
             setMoney(money-currentAuctionPrice)
     },[auctionWin,currentAuctionPrice,setMoney])
-    const addValue = (val) => setAuction(auction+val);
+    const addValue = val => setAuction(auction+val);
 
+    const [ gamePhase, setGamePhase ] = useState(false);
     // const [ port, setPort ] = useState({'A':'', 'B':'', 'C':''});//punts successfully depart, 4->6, 3->8, 2->15
     // const [ shipyard, setShipyard ] = useState({'A':'', 'B':'', 'C':''});//punts fail to depart, 4->6, 3->8, 2->15
     // const [ pirateSpace, setPirateSpace ] = useState([]);//pay 5 each
@@ -74,16 +76,17 @@ function GamePage({ myName, players, initShare, remainShare, globalSharePrices, 
                     <Auction
                         currentPrice={currentAuctionPrice}
                         auctionPrice={auction}
-                        addFive={addValue(5)}
-                        addOne={addValue(1)}
-                        minusFive={addValue(-5)}
-                        minusOne={addValue(-1)}
+                        addValue={addValue}
                     />:<h2>Current Price: {currentAuctionPrice}</h2>
             }
             {
                 (buyPhase) ?
                     <AuctionShareTable sharePrices={sharePrices} shareNumbers={shareNumbers} priceUp={buyShare}/>
                     : <div></div>
+            }
+            {
+                (gamePhase) ?
+                    <GameBoard/>:<div></div>
             }
 
         </div>

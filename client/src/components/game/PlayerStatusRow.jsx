@@ -1,8 +1,8 @@
 import React from 'react';
-import PlayerStatusCard from "./PlayerStatusCard";
+import PlayerStatusCard from "./StatusBar/PlayerStatusCard";
 import styles from './PlayerStatusRow.module.css';
-import MyStatusCard from "./MyStatusCard";
-import ShareTable from "./ShareTable";
+import MyStatusCard from "./StatusBar/MyStatusCard";
+import ShareTable from "./StatusBar/ShareTable";
 
 
 function PlayerStatusRow({ sharePrices,shareNumbers,myName, money, shareList, players }) {

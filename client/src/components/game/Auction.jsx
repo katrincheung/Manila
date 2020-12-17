@@ -4,7 +4,7 @@ import AuctionButton from './auction/AuctionButton'
 import BidButton from "./auction/BidButton";
 import {socket} from "../../App";
 
-function Auction({ code, currentPrice, auctionPrice, addFive, addOne, minusFive, minusOne }) {
+function Auction({ code, currentPrice, auctionPrice, addValue }) {
 
     const bid = () => socket.send(`BID ${auctionPrice}`);
     const pass = () => socket.send(`PASS`);
@@ -17,10 +17,10 @@ function Auction({ code, currentPrice, auctionPrice, addFive, addOne, minusFive,
             <h5>Bid Price</h5>
             <h5>{auctionPrice}</h5>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <AuctionButton type='button' onClick={addFive}>+5</AuctionButton>
-                <AuctionButton type='button' onClick={addOne}>+1</AuctionButton>
-                <AuctionButton type='button' onClick={minusOne}>-1</AuctionButton>
-                <AuctionButton type='button' onClick={minusFive}>-5</AuctionButton>
+                <AuctionButton type='button' onClick={()=>addValue(5)}>+5</AuctionButton>
+                <AuctionButton type='button' onClick={()=>addValue(1)}>+1</AuctionButton>
+                <AuctionButton type='button' onClick={()=>addValue(-1)}>-1</AuctionButton>
+                <AuctionButton type='button' onClick={()=>addValue(-5)}>-5</AuctionButton>
             </div>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <BidButton type='button' onClick={bid}>BID</BidButton>
