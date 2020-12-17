@@ -1,10 +1,11 @@
 import React from 'react';
 import Punt from "./GameBoard/Punt";
 
-function GameBoard() {
+
+function GameBoard({ myName, pay }) {
     return(
         <div>
-            <Punt color={'brown'} price={24} fee={[2,3,4]}/>
+            <Punt myName={myName} pay={pay} color={'brown'} price={24} fee={[2,3,4]}/>
         </div>
     );
 }

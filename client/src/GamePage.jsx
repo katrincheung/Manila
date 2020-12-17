@@ -19,6 +19,13 @@ function GamePage({ myName, players, initShare, remainShare, globalSharePrices, 
     useEffect(()=>setShareNumbers(remainShare),[remainShare])
 
     const [ buyPhase, setBuyPhase ] = useState(auctionWin);
+    useEffect(()=>{
+        if(auctionWin){
+            setBuyPhase(true);
+        }else{
+            setBuyPhase(false);
+        }
+    },[auctionWin, setBuyPhase]);
     const buyShare = ( color ) => {
         if(shareNumbers[color] > 0) {
             socket.send(`UPDATE_SHARE_NUMBER ${color}`)
@@ -43,13 +50,7 @@ function GamePage({ myName, players, initShare, remainShare, globalSharePrices, 
         setBuyPhase(false);
         setGamePhase(true);
     };
-    useEffect(()=>{
-        if(auctionWin){
-            setBuyPhase(true);
-        }else{
-            setBuyPhase(false);
-        }
-    },[auctionWin, setBuyPhase]);
+
 
     const [ auction, setAuction ] = useState(currentAuctionPrice+1);
     useEffect(() => setAuction(currentAuctionPrice+1),[currentAuctionPrice])
@@ -60,6 +61,7 @@ function GamePage({ myName, players, initShare, remainShare, globalSharePrices, 
     const addValue = val => setAuction(auction+val);
 
     const [ gamePhase, setGamePhase ] = useState(false);
+    const pay = (fee) => setMoney(money - fee);
     // const [ port, setPort ] = useState({'A':'', 'B':'', 'C':''});//punts successfully depart, 4->6, 3->8, 2->15
     // const [ shipyard, setShipyard ] = useState({'A':'', 'B':'', 'C':''});//punts fail to depart, 4->6, 3->8, 2->15
     // const [ pirateSpace, setPirateSpace ] = useState([]);//pay 5 each
@@ -86,7 +88,7 @@ function GamePage({ myName, players, initShare, remainShare, globalSharePrices, 
             }
             {
                 (gamePhase) ?
-                    <GameBoard/>:<div></div>
+                    <GameBoard myName={myName} pay={pay}/>:<div></div>
             }
 
         </div>

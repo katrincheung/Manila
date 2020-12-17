@@ -3,6 +3,7 @@ import { socket } from './App'
 import './LoginPage.css';
 import LoginInput from "./components/Login/LoginInput";
 import Header from "./components/common/Header";
+import Seat from "./components/game/GameBoard/Seat";
 
 
 function LoginPage() {

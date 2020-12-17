@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import Seat from "./Seat";
 
-function Punt({ color, price, fee }) {
+function Punt({ myName, pay, color, price, fee }) {
 
     const [ seat, setSeat ] = useState({'color':color, 'price':price, 'fee':fee, 'occupied':[], 'location':0 });
 
@@ -14,6 +15,9 @@ function Punt({ color, price, fee }) {
     return (
         <div>
             <h4>{color} Punt: {seat.occupied}</h4>
+            <Seat myName={myName} pay={pay} fee={fee[0]}/>
+            <Seat myName={myName} pay={pay} fee={fee[1]}/>
+            <Seat myName={myName} pay={pay} fee={fee[2]}/>
         </div>
     );
 }
