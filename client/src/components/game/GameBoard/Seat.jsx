@@ -1,17 +1,11 @@
 import React, {useState} from 'react';
 import styles from './Seat.module.css';
 
-function Seat({ myName, pay, fee }) {
-
-    const [ children, setChildren ] = useState(fee);
-    const onClick = () => {
-        setChildren(myName);
-        pay(fee);
-    }
+function Seat({ index, sit, fee, occupy }) {
 
     return(
         <div>
-            <button className={styles.btn} onClick={onClick}>{children}</button>
+            <button className={styles.btn} onClick={()=>sit(index)}>{(occupy!=='')?occupy:fee}</button>
         </div>
     );
 }

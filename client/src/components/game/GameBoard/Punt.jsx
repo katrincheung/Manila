@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Seat from "./Seat";
 
 function Punt({ myName, pay, color, price, fee }) {
 
-    const [ seat, setSeat ] = useState({'color':color, 'price':price, 'fee':fee, 'occupied':[] });
+    const [ occupies, setOccupies ] = useState(Array(fee.length).fill(''));
     const [ location, setLocation ] = useState(0)
-    function sit() {
-        if(seat.occupied.length < 3){
-            setSeat({...seat, 'occupied':[{...seat['occupied']},'newPlayer']})
-        }
-    }
 
+    function sit(index) {
+        const temp = occupies;
+        temp[index] = myName;
+        setOccupies(temp);
+        pay(fee[index])
+    }
 
     return (
         <div>
@@ -18,7 +19,7 @@ function Punt({ myName, pay, color, price, fee }) {
             <h4>{color}</h4>
             <h4>{location}</h4>
             {
-                fee.map((value,key)=><Seat key={key} myName={myName} pay={pay} fee={value}/>)
+                fee.map((value,key)=><Seat sit={sit} key={key} index={key} pay={pay} fee={value} occupy={occupies[key]}/>)
             }
         </div>
     );
