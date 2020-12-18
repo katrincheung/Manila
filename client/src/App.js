@@ -1,5 +1,5 @@
 import './App.css';
-import React, {useEffect, useState} from 'react';
+import React, { useState　} from 'react';
 import HandleMessage from "./HandleMessage";
 
 
@@ -7,17 +7,15 @@ export const socket = new WebSocket('ws://localhost:8080')
 
 function App() {
 
-    const [ messageQueue, setMessageQueue ] = useState('');
+    const [ message, setMessage] = useState('');
 
-    useEffect(() => {
-        socket.onopen = () =>  console.log("connected!");
-        socket.onclose = () => console.log("disconnected");
-        socket.onmessage = e => setMessageQueue(e.data);
-    },[]);
+    socket.onopen = () =>  console.log("connected!");
+    socket.onclose = () => console.log("disconnected");
+    socket.onmessage = e => setMessage(e.data);
 
     return (
         <div className="App">
-        <HandleMessage message={messageQueue.split(' ')}/>
+        <HandleMessage message={message.split(' ')}/>
         </div>
     );
 }
