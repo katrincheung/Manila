@@ -1,11 +1,15 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styles from './Seat.module.css';
 
-function Seat({ index, sit, fee, occupy }) {
+function Seat({ enable, index, sit, fee, occupy }) {
 
     return(
         <div>
-            <button className={styles.btn} onClick={()=>sit(index)}>{(occupy!=='')?occupy:fee}</button>
+            {
+                (enable)?
+                    <button className={styles.btn} onClick={()=>sit(index)}>{(occupy!=='')?occupy:fee}</button>
+                    :<div className={styles.disable}>{(occupy!=='')?occupy:fee}</div>
+            }
         </div>
     );
 }
