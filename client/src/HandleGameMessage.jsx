@@ -55,8 +55,6 @@ const HandleGameMessage = ({ message, playerList, myName }) => {
                 default:
                     console.log(`${message}`);
                     break;
-
-
         }
 
     },[message, setCurrentAuctionPrice, setAuctionTurn],);
