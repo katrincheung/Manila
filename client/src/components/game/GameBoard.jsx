@@ -40,23 +40,14 @@ function GameBoard({ myName, pay }) {
         }
     }
 
-    /*
-    p1 choose punt to sit
-    punt set p1 on seat
-    set enable to next value
-    pay money
-    p1 send message
-    p2 set occupy
-    p2 set enable
-     */
 
 
     return(
         <div className={styles.punt}>
-            {(puntChoice.brown)?<Punt myName={myName} color={'brown'} fee={[2,3,4]} occupier={puntOccupier.brown} sitPunt={sitPunt} pay={pay} />:<div></div>}
-            {/*{(puntChoice.brown)?<Punt color={'blue'} myName={myName} fee={[3,4,5]} occupier={puntOccupier.blue} sitPunt={sitPunt} pay={pay} />:<div></div>}*/}
-            {/*{(puntChoice.yellow)?<Punt color={'yellow'} myName={myName} fee={[1,2,3]} occupier={puntOccupier.yellow} sitPunt={sitPunt} pay={pay} />:<div></div>}*/}
-            {/*{(puntChoice.brown)?<Punt color={'green'} myName={myName} fee={[3,4,5,5]} occupier={puntOccupier.green} sitPunt={sitPunt} pay={pay} />:<div></div>}*/}
+            {(puntChoice.brown)?<Punt color={'brown'} myName={myName} fee={[2,3,4]} occupier={puntOccupier.brown} sitPunt={sitPunt} pay={pay} />:<div></div>}
+            {(puntChoice.brown)?<Punt color={'blue'} myName={myName} fee={[3,4,5]} occupier={puntOccupier.blue} sitPunt={sitPunt} pay={pay} />:<div></div>}
+            {(puntChoice.yellow)?<Punt color={'yellow'} myName={myName} fee={[1,2,3]} occupier={puntOccupier.yellow} sitPunt={sitPunt} pay={pay} />:<div></div>}
+            {(puntChoice.brown)?<Punt color={'green'} myName={myName} fee={[3,4,5,5]} occupier={puntOccupier.green} sitPunt={sitPunt} pay={pay} />:<div></div>}
         </div>
     );
 }
