@@ -1,7 +1,14 @@
 import handleLoginRequest, { handleGameStartRequest } from "./LoginFunction.js";
 import Player from "./Player.js";
 import { bid, passAuction } from "./AuctionFunction.js";
-import {gameSetUp, updateSharePrice, updateMoney, updatePlayerShare, updateShareNumber} from "./GameFunction.js";
+import {
+    gameSetUp,
+    updateSharePrice,
+    updateMoney,
+    updatePlayerShare,
+    updateShareNumber,
+    sitPunt
+} from "./GameFunction.js";
 
 
 let waitingRooms = {};
@@ -49,6 +56,9 @@ export default function handleSockets(ws, message) {
                 break;
             case 'UPDATE_GLOBAL_SHARE_PRICE':
                 updateSharePrice(ws, message[1], message[2], playingRooms[ws.CODE])
+                break;
+            case 'SIT_PUNT':
+                sitPunt(ws, message[1], playingRooms[ws.CODE])
                 break;
             default:
                 console.log(`unknownInput = ${message}`);
