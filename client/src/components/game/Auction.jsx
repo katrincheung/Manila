@@ -4,10 +4,16 @@ import AuctionButton from './auction/AuctionButton'
 import BidButton from "./auction/BidButton";
 import {socket} from "../../App";
 
-function Auction({ code, currentPrice, auctionPrice, addValue }) {
+function Auction({ currentPrice, auctionPrice, addValue, setIsMyTurn }) {
 
-    const bid = () => socket.send(`BID ${auctionPrice}`);
-    const pass = () => socket.send(`PASS`);
+    const bid = () => {
+        socket.send(`BID ${auctionPrice}`);
+        setIsMyTurn(false);
+    }
+    const pass = () => {
+        socket.send(`PASS`);
+        setIsMyTurn(false);
+    }
 
 
     return(

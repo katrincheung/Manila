@@ -1,6 +1,6 @@
 import handleLoginRequest, { handleGameStartRequest } from "./LoginFunction.js";
 import Player from "./Player.js";
-import { bid, passAuction } from "./AuctionFunction.js";
+import {bid, passAuction, startAuction} from "./AuctionFunction.js";
 import {
     gameSetUp,
     updateSharePrice,
@@ -29,8 +29,8 @@ export default function handleSockets(ws, message) {
                 playingRooms[ws.CODE] = handleGameStartRequest(waitingRooms[ws.CODE]);
                 inGame = true;
                 gameSetUp(playingRooms[ws.CODE])
-                console.log('gameSetUp done');
-                ws.send('YOUR_AUCTION');
+                startAuction(playingRooms[ws.CODE])
+                ws.send('YOUR_TURN');
                 break;
             default:
                 console.log(`unknownInput = ${message}`);

@@ -12,7 +12,6 @@ function Punt({ color, myName, pay, fee, occupier, sitPunt }) {
     }
 
     useEffect(()=>{
-        console.log('in punt useEffect')
         if (occupier[enable] !== ''){
             setEnable(enable+1)
             console.log('enable +1');
@@ -26,7 +25,7 @@ function Punt({ color, myName, pay, fee, occupier, sitPunt }) {
             <h4>Punt</h4>
             <h4>{location}</h4>
             {
-                fee.map((value,key)=><Seat key={key} enable={enable} index={key} fee={value} occupier={occupier[key]} sit={sit}/>)
+                fee.map((value,key)=><Seat key={key} enable={enable} index={key} fee={value} occupier={occupier[key]} sit={() => sit(key)}/>)
             }
         </div>
     );

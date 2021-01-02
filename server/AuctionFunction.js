@@ -5,22 +5,30 @@ function getNextPlayer(room, ws){
     return getNextPlayer(room, room[ws.UID].next.ws)
 }
 
+export function startAuction(room){
+    for(let id in room){
+        room[id].ws.send(`AUCTION_PHASE`);
+    }
+}
+
+export function startBuyPhase(room){
+    for(let id in room){
+        room[id].ws.send(`BUY_PHASE`);
+    }
+}
+
 export function bid(price, room, ws){
-    ws.send(`AUCTION_TURN_DONE`);
     for(let id in room){
         room[id].ws.send(`CURRENT_PRICE ${price}`);
     }
-    getNextPlayer(room, ws).ws.send(`YOUR_AUCTION`);
+    getNextPlayer(room, ws).ws.send(`YOUR_TURN`);
 }
 
 export function passAuction(room, ws){
     room[ws.UID].pass = true;
-    ws.send(`AUCTION_TURN_DONE`);
     const nextPlayer = getNextPlayer(room, ws);
+    nextPlayer.ws.send(`YOUR_TURN`);
     if (getNextPlayer(room, nextPlayer.ws) === nextPlayer){
-        nextPlayer.ws.send(`AUCTION_WIN`);
-    }else {
-        nextPlayer.ws.send(`YOUR_AUCTION`);
+        startBuyPhase(room)
     }
-
 }

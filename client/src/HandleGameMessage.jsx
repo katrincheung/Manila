@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import GamePage from "./GamePage";
+import MyGame from "./MyGame";
 
 
 const HandleGameMessage = ({ message, playerList, myName }) => {
@@ -10,7 +10,9 @@ const HandleGameMessage = ({ message, playerList, myName }) => {
     const [ sharePrices, setSharePrices ] = useState({'brown':0, 'blue':0, 'yellow':0, 'green':0});
 
     const [ currentAuctionPrice, setCurrentAuctionPrice ] = useState(0);
-    const [ auctionTurn, setAuctionTurn ] = useState(false);
+    const [ isMyTurn, setIsMyTurn ] = useState(false);
+
+    const [ auctionPhase, setAuctionPhase ] = useState(false);
     const [ buyPhase, setBuyPhase ] = useState(false);
     const [ gamePhase, setGamePhase ] = useState(false);
 
@@ -27,13 +29,14 @@ const HandleGameMessage = ({ message, playerList, myName }) => {
                 case 'CURRENT_PRICE':
                     setCurrentAuctionPrice(parseInt(message[1],10));
                     break;
-                case 'YOUR_AUCTION':
-                    setAuctionTurn(true);
+                case 'YOUR_TURN':
+                    setIsMyTurn(true);
                     break;
-                case 'AUCTION_TURN_DONE':
-                    setAuctionTurn(false);
+                case 'AUCTION_PHASE':
+                    setAuctionPhase(true);
                     break;
-                case 'AUCTION_WIN':
+                case 'BUY_PHASE':
+                    setAuctionPhase(false);
                     setBuyPhase(true);
                     break;
                 case 'UPDATE_MONEY':
@@ -57,20 +60,22 @@ const HandleGameMessage = ({ message, playerList, myName }) => {
                     break;
         }
 
-    },[message, setCurrentAuctionPrice, setAuctionTurn],);
+    },[message, setCurrentAuctionPrice, setIsMyTurn],);
 
     return (
         <div>
             {
                 (Object.entries(remainShare).length !== 0)?
-                    <GamePage
+                    <MyGame
                         myName={myName}
                         players={players}
                         initShare={initShare}
                         remainShare={remainShare}
                         sharePrices={sharePrices}
                         currentAuctionPrice={currentAuctionPrice}
-                        auctionTurn={auctionTurn}
+                        isMyTurn={isMyTurn}
+                        setIsMyTurn={setIsMyTurn}
+                        auctionPhase={auctionPhase}
                         buyPhase={buyPhase}
                         gamePhase={gamePhase}
                     />:<h4>waiting server initialise</h4>

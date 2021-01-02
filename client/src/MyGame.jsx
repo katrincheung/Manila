@@ -6,7 +6,7 @@ import {socket} from "./App";
 import PlayerStatusRow from "./components/game/PlayerStatusRow";
 import GameBoard from "./components/game/GameBoard";
 
-function GamePage({ myName, players, initShare, remainShare, sharePrices, currentAuctionPrice, auctionTurn, buyPhase, gamePhase }) {
+function MyGame({ myName, players, initShare, remainShare, sharePrices, currentAuctionPrice, isMyTurn, setIsMyTurn, auctionPhase, buyPhase, gamePhase }) {
     const [ money, setMoney ] = useState(30);
     useEffect(()=>socket.send(`UPDATE_MONEY ${money}`), [money])
     const [ myShareList, setMyShareList ] = useState(initShare);
@@ -54,17 +54,30 @@ function GamePage({ myName, players, initShare, remainShare, sharePrices, curren
             <Header>Game Page</Header>
             <PlayerStatusRow sharePrices={sharePrices} shareNumbers={remainShare} myName={myName} money={money} shareList={myShareList} players={players}/>
             {
-                (auctionTurn) ?
-                    <Auction
-                        currentPrice={currentAuctionPrice}
-                        auctionPrice={auction}
-                        addValue={addValue}
-                    />:<h2>Current Price: {currentAuctionPrice}</h2>
+                (auctionPhase) ?
+                    <div>
+                        {
+                            (isMyTurn) ?
+                                <Auction
+                                    currentPrice={currentAuctionPrice}
+                                    auctionPrice={auction}
+                                    addValue={addValue}
+                                    setIsMyTurn={setIsMyTurn}
+                                />
+                                : <h2>Current Price: {currentAuctionPrice}</h2>
+                        }
+                    </div>:
+                    <div></div>
             }
             {
                 (buyPhase) ?
-                    <AuctionShareTable sharePrices={sharePrices} shareNumbers={remainShare} priceUp={buyShare}/>
+                    <div>{
+                        (isMyTurn) ?
+                        <AuctionShareTable sharePrices={sharePrices} shareNumbers={remainShare} priceUp={buyShare}/>
+                        : <h4>Captain's buying phase</h4>
+                    }</div>
                     : <div></div>
+
             }
             {
                 (gamePhase) ?
@@ -75,4 +88,4 @@ function GamePage({ myName, players, initShare, remainShare, sharePrices, curren
     );
 }
 
-export default GamePage;
+export default MyGame;

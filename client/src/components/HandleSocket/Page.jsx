@@ -1,7 +1,7 @@
 import LoginPage from "../../LoginPage";
 import WaitingPage from "../../WaitingPage";
 import React from "react";
-import GamePage from "../../GamePage";
+import MyGame from "../../MyGame";
 
 
 const Page = (props) => {
@@ -14,7 +14,7 @@ const Page = (props) => {
                 nameList={props.nameList}
             />
         case 'GamePage':
-            return <GamePage
+            return <myPlayer
                 myName={props.myName}
                 players={props.players}
                 initShare={props.initShare}
