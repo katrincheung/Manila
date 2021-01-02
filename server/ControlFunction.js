@@ -30,6 +30,12 @@ export function setNextPlayerTurn(players, ws){
     getNextPlayer(players, ws).ws.send('YOUR_TURN');
 }
 
+function resetPlayerPass(players){
+    for(const [uid, player] of Object.entries(players)){
+        player.pass = false;
+    }
+}
+
 export function updateMoney(ws, money, players) {
     for(const [uid, player] of Object.entries(players)){
         if(player.name !== ws.NAME){
@@ -54,5 +60,6 @@ export function startBuyPhase(players){
     for(let id in players){
         players[id].ws.send(`BUY_PHASE`);
     }
+    resetPlayerPass(players);
 }
 

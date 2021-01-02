@@ -9,6 +9,17 @@ import { gameSetUp, updateMoney, updateSharePrice, startAuction } from "./Contro
 let waitingRooms = {};
 let playingRooms = {};
 let inGame = false;
+/*
+playingRooms = {
+    roomCode : {
+        players = {
+            playerId = {
+                player:{ ws, name, next, pass }
+                }
+        }
+    }
+}
+ */
 
 export default function handleSockets(ws, message) {
     let command = message[0];

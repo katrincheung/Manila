@@ -4,7 +4,7 @@ import styles from './GameBoard.module.css';
 import {socket} from "../../App";
 
 
-function GameBoard({ myName, isMyTurn, setIsMyTurn, pay }) {
+function GameBoard({ myName, isMyTurn, setIsMyTurn, pay, handleMessage }) {
 
     const [ gameMessage, setGameMessage] = useState('');
     const checkTurn = (func) => {
@@ -19,14 +19,14 @@ function GameBoard({ myName, isMyTurn, setIsMyTurn, pay }) {
 
     socket.onmessage = e => setGameMessage(e.data);
     useEffect(()=>{
-        console.log(gameMessage)
+        console.log( 'GameBoard receive = '+ gameMessage)
         const message = gameMessage.split(' ');
         switch (message[0]){
             case 'SIT_PUNT':
                 sitPunt(message[2], message[1], 0)
                 break;
             default:
-                console.log('')
+                handleMessage(message);
                 break;
         }
     },[gameMessage])
