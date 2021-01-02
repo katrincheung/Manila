@@ -49,9 +49,9 @@ const HandleGameMessage = ({ message, playerList, myName }) => {
                     setRemainShare({...remainShare, [message[1]]:remainShare[message[1]]-1});
                     break;
                 case 'UPDATE_SHARE_PRICE':
-                    setSharePrices({...sharePrices, [message[1]]:message[2]});
+                    setSharePrices({...sharePrices, [message[1]]:parseInt(message[2],10)});
                     break;
-                case 'BUY_DONE':
+                case 'GAME_PHASE':
                     setBuyPhase(false);
                     setGamePhase(true);
                     break;

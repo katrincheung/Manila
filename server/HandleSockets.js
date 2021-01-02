@@ -1,14 +1,9 @@
 import handleLoginRequest, { handleGameStartRequest } from "./LoginFunction.js";
 import Player from "./Player.js";
-import {bid, passAuction, startAuction} from "./AuctionFunction.js";
-import {
-    gameSetUp,
-    updateSharePrice,
-    updateMoney,
-    updatePlayerShare,
-    updateShareNumber,
-    sitPunt
-} from "./GameFunction.js";
+import { bid, passAuction, updatePlayerShare, updateShareNumber } from "./AuctionFunction.js";
+import { sitPunt } from "./GameFunction.js";
+import { gameSetUp, updateMoney, updateSharePrice, startAuction } from "./ControlFunction.js";
+
 
 
 let waitingRooms = {};

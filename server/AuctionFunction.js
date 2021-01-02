@@ -1,34 +1,33 @@
-function getNextPlayer(room, ws){
-    if(!room[ws.UID].next.pass){
-        return room[ws.UID].next;
+import {getNextPlayer, setNextPlayerTurn, startBuyPhase} from "./ControlFunction.js";
+
+
+export function bid(price, players, ws){
+    for(let id in players){
+        players[id].ws.send(`CURRENT_PRICE ${price}`);
     }
-    return getNextPlayer(room, room[ws.UID].next.ws)
+    setNextPlayerTurn(players, ws)
 }
 
-export function startAuction(room){
-    for(let id in room){
-        room[id].ws.send(`AUCTION_PHASE`);
-    }
-}
-
-export function startBuyPhase(room){
-    for(let id in room){
-        room[id].ws.send(`BUY_PHASE`);
-    }
-}
-
-export function bid(price, room, ws){
-    for(let id in room){
-        room[id].ws.send(`CURRENT_PRICE ${price}`);
-    }
-    getNextPlayer(room, ws).ws.send(`YOUR_TURN`);
-}
-
-export function passAuction(room, ws){
-    room[ws.UID].pass = true;
-    const nextPlayer = getNextPlayer(room, ws);
+export function passAuction(players, ws){
+    players[ws.UID].pass = true;
+    const nextPlayer = getNextPlayer(players, ws);
     nextPlayer.ws.send(`YOUR_TURN`);
-    if (getNextPlayer(room, nextPlayer.ws) === nextPlayer){
-        startBuyPhase(room)
+    if (getNextPlayer(players, nextPlayer.ws) === nextPlayer){
+        startBuyPhase(players)
+    }
+}
+
+export function updatePlayerShare(ws, shareNum, players) {
+    for(const [uid, player] of Object.entries(players)){
+        if(player.name !== ws.NAME){
+            player.ws.send(`UPDATE_PLAYER_SHARE ${ws.NAME} ${shareNum}`)
+        }
+    }
+}
+
+export function updateShareNumber(ws, color, players) {
+    for(const [uid, player] of Object.entries(players)){
+        player.ws.send('GAME_PHASE');
+        player.ws.send(`UPDATE_SHARE_NUMBER ${color}`);
     }
 }

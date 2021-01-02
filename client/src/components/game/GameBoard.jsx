@@ -4,11 +4,19 @@ import styles from './GameBoard.module.css';
 import {socket} from "../../App";
 
 
-function GameBoard({ myName, pay }) {
+function GameBoard({ myName, isMyTurn, setIsMyTurn, pay }) {
 
     const [ gameMessage, setGameMessage] = useState('');
-    const [ isMyTurn, setIsMyTurn ] = useState(false);
-    const checkTurn = (func) => (isMyTurn) ? func() : alert("Not your turn");
+    const checkTurn = (func) => {
+        if(isMyTurn) {
+            func();
+            setIsMyTurn(false);
+        } else{
+            alert("Not your turn");
+            console.log('not my turn')
+        }
+    }
+
     socket.onmessage = e => setGameMessage(e.data);
     useEffect(()=>{
         console.log(gameMessage)
@@ -28,11 +36,9 @@ function GameBoard({ myName, pay }) {
     const puntPrizes = {'brown':24, 'blue':30, 'yellow':18, 'green':36}
     const sitPunt = (player, color) => {
         const temp = puntOccupier[color];
-        console.log(`original temp is ${temp}`)
         for (let i = 0; i < temp.length; i++){
             if (temp[i] === ''){
                 temp[i] = player
-                console.log(`no ppl in ${i}`)
                 break;
             }
         }
@@ -46,10 +52,18 @@ function GameBoard({ myName, pay }) {
 
     return(
         <div className={styles.punt}>
-            {(puntChoice.brown)?<Punt color={'brown'} myName={myName} fee={[2,3,4]} occupier={puntOccupier.brown} sitPunt={sitPunt} pay={pay}/>:<div></div>}
-            {(puntChoice.brown)?<Punt color={'blue'} myName={myName} fee={[3,4,5]} occupier={puntOccupier.blue} sitPunt={sitPunt} pay={pay} />:<div></div>}
-            {(puntChoice.yellow)?<Punt color={'yellow'} myName={myName} fee={[1,2,3]} occupier={puntOccupier.yellow} sitPunt={sitPunt} pay={pay} />:<div></div>}
-            {(puntChoice.brown)?<Punt color={'green'} myName={myName} fee={[3,4,5,5]} occupier={puntOccupier.green} sitPunt={sitPunt} pay={pay} />:<div></div>}
+            {(puntChoice.brown) ?
+                <Punt color={'brown'}
+                      myName={myName}
+                      fee={[2,3,4]}
+                      occupier={puntOccupier.brown}
+                      sitPunt={sitPunt}
+                      pay={pay}
+                      checkTurn={checkTurn}
+                /> : <div></div>}
+            {/*{(puntChoice.brown)?<Punt color={'blue'} myName={myName} fee={[3,4,5]} occupier={puntOccupier.blue} sitPunt={sitPunt} pay={pay} />:<div></div>}*/}
+            {/*{(puntChoice.yellow)?<Punt color={'yellow'} myName={myName} fee={[1,2,3]} occupier={puntOccupier.yellow} sitPunt={sitPunt} pay={pay} />:<div></div>}*/}
+            {/*{(puntChoice.brown)?<Punt color={'green'} myName={myName} fee={[3,4,5,5]} occupier={puntOccupier.green} sitPunt={sitPunt} pay={pay} />:<div></div>}*/}
         </div>
     );
 }

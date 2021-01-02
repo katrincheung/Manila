@@ -15,7 +15,7 @@ function MyGame({ myName, players, initShare, remainShare, sharePrices, currentA
     const [ auction, setAuction ] = useState(currentAuctionPrice+1);
     useEffect(() => setAuction(currentAuctionPrice+1),[currentAuctionPrice])
     useEffect(() => {
-        if(buyPhase)
+        if(buyPhase && isMyTurn)
             setMoney(money-currentAuctionPrice)
     },[buyPhase, currentAuctionPrice, setMoney])
     const addValue = val => setAuction(auction+val);
@@ -27,16 +27,16 @@ function MyGame({ myName, players, initShare, remainShare, sharePrices, currentA
             (sharePrices[color] === 0)? setMoney(money-5):setMoney(money-sharePrices[color]);
             switch (sharePrices[color]) {
                 case 5:
-                    socket.send(`UPDATE_SHARE_PRICE ${color} 10`)
+                    socket.send(`UPDATE_GLOBAL_SHARE_PRICE ${color} 10`)
                     break;
                 case 10:
-                    socket.send(`UPDATE_SHARE_PRICE ${color} 20`)
+                    socket.send(`UPDATE_GLOBAL_SHARE_PRICE ${color} 20`)
                     break;
                 case 20:
-                    socket.send(`UPDATE_SHARE_PRICE ${color} 30`)
+                    socket.send(`UPDATE_GLOBAL_SHARE_PRICE ${color} 30`)
                     break;
                 default:
-                    socket.send(`UPDATE_SHARE_PRICE ${color} 5`)
+                    socket.send(`UPDATE_GLOBAL_SHARE_PRICE ${color} 5`)
                     break;
             }
         }
@@ -81,7 +81,7 @@ function MyGame({ myName, players, initShare, remainShare, sharePrices, currentA
             }
             {
                 (gamePhase) ?
-                    <GameBoard myName={myName} pay={pay}/>:<div></div>
+                    <GameBoard myName={myName} isMyTurn={isMyTurn} setIsMyTurn={setIsMyTurn} pay={pay}/>:<div></div>
             }
 
         </div>
