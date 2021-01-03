@@ -42,12 +42,6 @@ function MyGame({ myName, players, initShare, remainShare, sharePrices, currentA
         }
     };
     const pay = (fee) => setMoney(money - fee);
-    // const [ port, setPort ] = useState({'A':'', 'B':'', 'C':''});//punts successfully depart, 4->6, 3->8, 2->15
-    // const [ shipyard, setShipyard ] = useState({'A':'', 'B':'', 'C':''});//punts fail to depart, 4->6, 3->8, 2->15
-    // const [ pirateSpace, setPirateSpace ] = useState([]);//pay 5 each
-    // const [ largePilot, setLargePilot ] = useState('');//pay 5
-    // const [ smallPilot, setSmallPilot ] = useState('');//pay 2
-    // const [ insurance, setInsurance ] = useState('');//get 10 immediately, pay for punts at shipyard
 
     return(
         <div>
@@ -74,7 +68,7 @@ function MyGame({ myName, players, initShare, remainShare, sharePrices, currentA
                     <div>{
                         (isMyTurn) ?
                         <AuctionShareTable sharePrices={sharePrices} shareNumbers={remainShare} priceUp={buyShare}/>
-                        : <h4>Captain's buying phase</h4>
+                        : <h4>Master's buying phase</h4>
                     }</div>
                     : <div></div>
 
