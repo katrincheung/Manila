@@ -13,6 +13,7 @@ export function passAuction(players, ws){
     const nextPlayer = getNextPlayer(players, ws);
     nextPlayer.ws.send(`YOUR_TURN`);
     if (getNextPlayer(players, nextPlayer.ws) === nextPlayer){
+        nextPlayer.master = true;
         startBuyPhase(players)
     }
 }

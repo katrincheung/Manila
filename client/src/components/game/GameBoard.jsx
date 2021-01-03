@@ -50,15 +50,29 @@ function GameBoard({ isMyTurn, setIsMyTurn, pay, handleMessage }) {
                         console.log('DEPLOY but no location')
                 }
                 break;
+            case 'LOCATION':
+                setLocation({'brown':location.brown+parseInt(message[1],10), 'blue':location.blue+parseInt(message[2],10), 'yellow':location.yellow+parseInt(message[3],10), 'green':location.green+parseInt(message[4],10)});
+                break;
             default:
                 handleMessage(message);
                 break;
         }
     },[gameMessage])
 
-    const [ puntChoice, setPuntChoice ] = useState({'brown':true, 'blue':true, 'yellow':true, 'green':true})
-    const [ puntOccupier, setPuntOccupier  ] = useState({'brown':['','',''], 'blue':['','',''], 'yellow':['','',''], 'green':['','','','']})
-    const location = {'brown':0, 'blue':0, 'yellow':0, 'green':0}
+    const [ puntChoice, setPuntChoice ] = useState({'brown':true, 'blue':true, 'yellow':true, 'green':true});
+    const [ puntOccupier, setPuntOccupier  ] = useState({'brown':['','',''], 'blue':['','',''], 'yellow':['','',''], 'green':['','','','']});
+    const [ location, setLocation ] = useState({'brown':0, 'blue':0, 'yellow':0, 'green':0});
+    useEffect(()=>{
+        console.log(location);
+        if(!puntChoice.brown && location.brown!==0)
+            setLocation({...location, brown: 0})
+        if(!puntChoice.blue && location.blue!==0)
+            setLocation({...location, blue: 0})
+        if(!puntChoice.yellow && location.yellow!==0)
+            setLocation({...location, yellow: 0})
+        if(!puntChoice.green && location.green!==0)
+            setLocation({...location, green: 0})
+    },[puntChoice, location, setLocation])
     const sitPunt = (player, color) => {
         const temp = puntOccupier[color];
         for (let i = 0; i < temp.length; i++){

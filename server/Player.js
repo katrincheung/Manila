@@ -4,6 +4,7 @@ export default class Player {
         this.ws = ws;
         this.next = null;
         this.pass = false;
+        this.master = false;
     }
 
 }
