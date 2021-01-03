@@ -13,7 +13,7 @@ function InsuranceSet({ occupier, pay, checkTurn }) {
 
     return(
         <div>
-            <h4>Pilot</h4>
+            <h4>Insurance</h4>
             <Seat isEnable={occupier.insurance===''} sit={() => checkTurn(() => sit())} fee={-10} occupier={occupier.insurance}/>
         </div>
     );

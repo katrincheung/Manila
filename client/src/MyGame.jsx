@@ -75,7 +75,7 @@ function MyGame({ myName, players, initShare, remainShare, sharePrices, currentA
             }
             {
                 (gamePhase) ?
-                    <GameBoard myName={myName} isMyTurn={isMyTurn} setIsMyTurn={setIsMyTurn} handleMessage={handleMessage} pay={pay}/>:<div></div>
+                    <GameBoard isMyTurn={isMyTurn} setIsMyTurn={setIsMyTurn} handleMessage={handleMessage} pay={pay}/>:<div></div>
             }
 
         </div>

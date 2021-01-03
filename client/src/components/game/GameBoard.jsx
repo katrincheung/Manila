@@ -9,7 +9,7 @@ import InsuranceSet from "./GameBoard/InsuranceSet";
 import PilotSet from "./GameBoard/PilotSet";
 
 
-function GameBoard({ myName, isMyTurn, setIsMyTurn, pay, handleMessage }) {
+function GameBoard({ isMyTurn, setIsMyTurn, pay, handleMessage }) {
 
     const [ gameMessage, setGameMessage] = useState('');
     const checkTurn = (func) => {
@@ -37,8 +37,14 @@ function GameBoard({ myName, isMyTurn, setIsMyTurn, pay, handleMessage }) {
                     case 'SHIPYARD':
                         deploy(message[3], shipyardOccupier, setShipyardOccupier, message[2])
                         break;
+                    case 'PIRATE':
+                        deploy(message[3], pirateOccupier, setPirateOccupier, message[2])
+                        break;
                     case 'PILOT':
                         deploy(message[3], pilotOccupier, setPilotOccupier, message[2])
+                        break;
+                    case 'INSURANCE':
+                        deploy(message[3], insuranceOccupier, setInsuranceOccupier, message[2])
                         break;
                     default:
                         console.log('DEPLOY but no location')
