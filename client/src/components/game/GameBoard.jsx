@@ -58,6 +58,7 @@ function GameBoard({ isMyTurn, setIsMyTurn, pay, handleMessage }) {
 
     const [ puntChoice, setPuntChoice ] = useState({'brown':true, 'blue':true, 'yellow':true, 'green':true})
     const [ puntOccupier, setPuntOccupier  ] = useState({'brown':['','',''], 'blue':['','',''], 'yellow':['','',''], 'green':['','','','']})
+    const location = {'brown':0, 'blue':0, 'yellow':0, 'green':0}
     const sitPunt = (player, color) => {
         const temp = puntOccupier[color];
         for (let i = 0; i < temp.length; i++){
@@ -69,21 +70,17 @@ function GameBoard({ isMyTurn, setIsMyTurn, pay, handleMessage }) {
         setPuntOccupier({...puntOccupier, [color]:temp});
     }
 
-    const [ portOccupier, setPortOccupier ] = useState({'A':'', 'B':'', 'C':''});//punts successfully depart, 4->6, 3->8, 2->15
+    const [ portOccupier, setPortOccupier ] = useState({'A':'', 'B':'', 'C':''});
     const [ shipyardOccupier, setShipyardOccupier ] = useState({'A':'', 'B':'', 'C':''})
     const [ pilotOccupier,setPilotOccupier ] = useState({'large':'','small':''})
     const [ pirateOccupier,setPirateOccupier ] = useState({'first':'','second':''})
     const [ insuranceOccupier, setInsuranceOccupier ] = useState({'insurance':''});
-    const deploy = (player, occupier, setOccupier, choice) => {
-        console.log('deploying')
-        console.log(portOccupier);
-        setOccupier({...occupier, [choice]:player});
-    }
+    const deploy = (player, occupier, setOccupier, choice) => setOccupier({...occupier, [choice]:player});
 
 
     return(
         <div className={styles.board}>
-            <PuntSet puntChoice={puntChoice} puntOccupier={puntOccupier} pay={pay} checkTurn={checkTurn}/>
+            <PuntSet puntChoice={puntChoice} puntOccupier={puntOccupier} location={location} pay={pay} checkTurn={checkTurn}/>
             <PortSet occupier={portOccupier} pay={pay} checkTurn={checkTurn}/>
             <ShipyardSet occupier={shipyardOccupier} pay={pay} checkTurn={checkTurn}/>
             <PirateSet occupier={pirateOccupier} pay={pay} checkTurn={checkTurn}/>

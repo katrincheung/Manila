@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Seat from "./Seat";
 import {socket} from "../../../App";
 
-function Punt({ color, pay, fee, occupier, checkTurn }) {
+function Punt({ color, fee, prize, location, pay, occupier, checkTurn }) {
 
     const [ enable, setEnable ] = useState(0);
 
@@ -20,7 +20,8 @@ function Punt({ color, pay, fee, occupier, checkTurn }) {
 
     return (
         <div>
-            <h4>Punt</h4>
+            <h4>{color}{location}</h4>
+            <h4>{prize}</h4>
             {
                 fee.map((value,key)=><Seat key={key} isEnable={enable===key} fee={value} occupier={occupier[key]} sit={() => checkTurn(()=> sit(key))}/>)
             }
