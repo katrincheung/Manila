@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Seat from "./Seat";
 
-function Port({ sit, fee, occupier, prize }) {
+function Port({ prize, occupier, ...restProps }) {
 
     return(
         <div>
             <h4>{prize}</h4>
-            <Seat isEnable={true} sit={sit} fee={fee} occupier={occupier}/>
+            <Seat isEnable={occupier===''} occupier={occupier} {...restProps}/>
         </div>
     );
 }

@@ -1,9 +1,8 @@
 import handleLoginRequest, { handleGameStartRequest } from "./LoginFunction.js";
 import Player from "./Player.js";
 import { bid, passAuction, updatePlayerShare, updateShareNumber } from "./AuctionFunction.js";
-import { sitPunt } from "./GameFunction.js";
+import { sitPunt, deploy } from "./GameFunction.js";
 import { gameSetUp, updateMoney, updateSharePrice, startAuction } from "./ControlFunction.js";
-
 
 
 let waitingRooms = {};
@@ -65,6 +64,9 @@ export default function handleSockets(ws, message) {
                 break;
             case 'SIT_PUNT':
                 sitPunt(ws, message[1], playingRooms[ws.CODE])
+                break;
+            case 'DEPLOY':
+                deploy(ws, message[1], message[2], playingRooms[ws.CODE])
                 break;
             default:
                 console.log(`unknownInput = ${message}`);

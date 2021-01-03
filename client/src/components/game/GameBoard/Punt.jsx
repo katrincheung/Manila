@@ -1,19 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import Seat from "./Seat";
+import {socket} from "../../../App";
 
-function getBool(num,key){
-    if(num===key){
-        return true;
-    }return false;
-}
-
-function Punt({ color, pay, fee, occupier, sitPunt, checkTurn }) {
+function Punt({ color, pay, fee, occupier, checkTurn }) {
 
     const [ enable, setEnable ] = useState(0);
 
     const sit = (index) =>{
         pay(fee[index])
-        sitPunt(color)
+        socket.send(`SIT_PUNT ${color}`)
     }
 
     useEffect(()=>{

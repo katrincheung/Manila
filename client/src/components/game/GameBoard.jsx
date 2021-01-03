@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 // import styles from './GameBoard.module.css';
 import {socket} from "../../App";
 import PuntSet from "./GameBoard/PuntSet";
+import PortSet from "./GameBoard/PortSet";
 
 
 function GameBoard({ myName, isMyTurn, setIsMyTurn, pay, handleMessage }) {
@@ -24,6 +25,15 @@ function GameBoard({ myName, isMyTurn, setIsMyTurn, pay, handleMessage }) {
             case 'SIT_PUNT':
                 sitPunt(message[2], message[1], 0)
                 break;
+            case 'DEPLOY':
+                switch(message[1]){
+                    case 'PORT':
+                        deploy(message[3], portOccupier, setPortOccupier, message[2])
+                        break;
+                    default:
+                        console.log('DEPLOY but no location')
+                }
+                break;
             default:
                 handleMessage(message);
                 break;
@@ -41,12 +51,14 @@ function GameBoard({ myName, isMyTurn, setIsMyTurn, pay, handleMessage }) {
             }
         }
         setPuntOccupier({...puntOccupier, [color]:temp});
-        if(player === myName){
-            socket.send(`SIT_PUNT ${color}`)
-        }
     }
 
     const [ portOccupier, setPortOccupier ] = useState({'A':'', 'B':'', 'C':''});//punts successfully depart, 4->6, 3->8, 2->15
+    const deploy = (player, occupier, setOccupier, choice) => {
+        console.log('deploying')
+        console.log(portOccupier);
+        setOccupier({...occupier, [choice]:player});
+    }
     // const [ shipyard, setShipyard ] = useState({'A':'', 'B':'', 'C':''});//punts fail to depart, 4->6, 3->8, 2->15
     // const [ pirateSpace, setPirateSpace ] = useState([]);//pay 5 each
     // const [ largePilot, setLargePilot ] = useState('');//pay 5
@@ -58,7 +70,11 @@ function GameBoard({ myName, isMyTurn, setIsMyTurn, pay, handleMessage }) {
             <PuntSet
                 puntChoice={puntChoice}
                 puntOccupier={puntOccupier}
-                sitPunt={color => sitPunt(myName, color)}
+                pay={pay}
+                checkTurn={checkTurn}
+            />
+            <PortSet
+                occupier={portOccupier}
                 pay={pay}
                 checkTurn={checkTurn}
             />
