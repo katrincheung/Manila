@@ -18,7 +18,6 @@ function Punt({ color, pay, fee, occupier, checkTurn }) {
     },[occupier[enable], setEnable])
 
 
-
     return (
         <div>
             <h4>Punt</h4>

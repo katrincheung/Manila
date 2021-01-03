@@ -1,6 +1,5 @@
-import React, {useState} from 'react';
-import {socket} from "../../../App";
-import styles from "../GameBoard.module.css";
+import React from 'react';
+import styles from "./PuntSet.module.css";
 import Punt from "./Punt";
 
 

@@ -1,8 +1,12 @@
 import React, {useEffect, useState} from 'react';
-// import styles from './GameBoard.module.css';
+import styles from './GameBoard.module.css';
 import {socket} from "../../App";
 import PuntSet from "./GameBoard/PuntSet";
 import PortSet from "./GameBoard/PortSet";
+import ShipyardSet from "./GameBoard/ShipyardSet";
+import PirateSet from "./GameBoard/PirateSet";
+import InsuranceSet from "./GameBoard/InsuranceSet";
+import PilotSet from "./GameBoard/PilotSet";
 
 
 function GameBoard({ myName, isMyTurn, setIsMyTurn, pay, handleMessage }) {
@@ -30,6 +34,12 @@ function GameBoard({ myName, isMyTurn, setIsMyTurn, pay, handleMessage }) {
                     case 'PORT':
                         deploy(message[3], portOccupier, setPortOccupier, message[2])
                         break;
+                    case 'SHIPYARD':
+                        deploy(message[3], shipyardOccupier, setShipyardOccupier, message[2])
+                        break;
+                    case 'PILOT':
+                        deploy(message[3], pilotOccupier, setPilotOccupier, message[2])
+                        break;
                     default:
                         console.log('DEPLOY but no location')
                 }
@@ -54,30 +64,25 @@ function GameBoard({ myName, isMyTurn, setIsMyTurn, pay, handleMessage }) {
     }
 
     const [ portOccupier, setPortOccupier ] = useState({'A':'', 'B':'', 'C':''});//punts successfully depart, 4->6, 3->8, 2->15
+    const [ shipyardOccupier, setShipyardOccupier ] = useState({'A':'', 'B':'', 'C':''})
+    const [ pilotOccupier,setPilotOccupier ] = useState({'large':'','small':''})
+    const [ pirateOccupier,setPirateOccupier ] = useState({'first':'','second':''})
+    const [ insuranceOccupier, setInsuranceOccupier ] = useState({'insurance':''});
     const deploy = (player, occupier, setOccupier, choice) => {
         console.log('deploying')
         console.log(portOccupier);
         setOccupier({...occupier, [choice]:player});
     }
-    // const [ shipyard, setShipyard ] = useState({'A':'', 'B':'', 'C':''});//punts fail to depart, 4->6, 3->8, 2->15
-    // const [ pirateSpace, setPirateSpace ] = useState([]);//pay 5 each
-    // const [ largePilot, setLargePilot ] = useState('');//pay 5
-    // const [ smallPilot, setSmallPilot ] = useState('');//pay 2
-    // const [ insurance, setInsurance ] = useState('');//get 10 immediately, pay for punts at shipyard
+
 
     return(
-        <div>
-            <PuntSet
-                puntChoice={puntChoice}
-                puntOccupier={puntOccupier}
-                pay={pay}
-                checkTurn={checkTurn}
-            />
-            <PortSet
-                occupier={portOccupier}
-                pay={pay}
-                checkTurn={checkTurn}
-            />
+        <div className={styles.board}>
+            <PuntSet puntChoice={puntChoice} puntOccupier={puntOccupier} pay={pay} checkTurn={checkTurn}/>
+            <PortSet occupier={portOccupier} pay={pay} checkTurn={checkTurn}/>
+            <ShipyardSet occupier={shipyardOccupier} pay={pay} checkTurn={checkTurn}/>
+            <PirateSet occupier={pirateOccupier} pay={pay} checkTurn={checkTurn}/>
+            <PilotSet occupier={pilotOccupier} pay={pay} checkTurn={checkTurn}/>
+            <InsuranceSet occupier={insuranceOccupier} pay={pay} checkTurn={checkTurn}/>
         </div>
     );
 }
