@@ -59,19 +59,22 @@ function GameBoard({ isMyTurn, setIsMyTurn, pay, handleMessage }) {
         }
     },[gameMessage])
 
-    const [ puntChoice, setPuntChoice ] = useState({'brown':true, 'blue':true, 'yellow':true, 'green':true});
+    const [ round, setRound ] = useState(0);
+    useEffect(() => {
+        if(round===3)
+            console.log('3 times now')
+    },[round, setRound])
+
+    const [ puntChoice, setPuntChoice ] = useState({'brown':true, 'blue':false, 'yellow':true, 'green':true});
     const [ puntOccupier, setPuntOccupier  ] = useState({'brown':['','',''], 'blue':['','',''], 'yellow':['','',''], 'green':['','','','']});
     const [ location, setLocation ] = useState({'brown':0, 'blue':0, 'yellow':0, 'green':0});
-    useEffect(()=>{
-        console.log(location);
-        if(!puntChoice.brown && location.brown!==0)
-            setLocation({...location, brown: 0})
-        if(!puntChoice.blue && location.blue!==0)
-            setLocation({...location, blue: 0})
-        if(!puntChoice.yellow && location.yellow!==0)
-            setLocation({...location, yellow: 0})
-        if(!puntChoice.green && location.green!==0)
-            setLocation({...location, green: 0})
+    useEffect(() => {
+        for (let color in puntChoice){
+            if (!puntChoice[color] && location[color]!==0) {
+                setLocation({...location, [color]: 0});
+                setRound(round+1);
+            }
+        }
     },[puntChoice, location, setLocation])
     const sitPunt = (player, color) => {
         const temp = puntOccupier[color];
