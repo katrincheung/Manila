@@ -11,18 +11,28 @@ const HandleMessage = ({ message }) => {
     const [ myName, setMyName ] = useState('');
     const [ nameList, setNameList ] = useState([]);
     const [ inGame, setInGame ] = useState(false);
-    const [ players, setPlayers ] = useState('');
+    const [ players, setPlayers ] = useState({});
 
+    // function updatePlayer(){
+    //     const temp = {}
+    //     nameList.forEach(name => {
+    //         if (name !== myName)
+    //             temp[name] = {'money': 30, 'share': 2}
+    //     })
+    //     setPlayers(temp)
+    // }
     function updatePlayer(){
-        const temp = {}
+        const money = {};
+        const share = {};
         nameList.forEach(name => {
+            money[name] = 30;
             if (name !== myName)
-                temp[name] = {'money': 30, 'share': 2}
+                share[name] = 2;
         })
-        setPlayers(temp)
+        setPlayers({money,share})
     }
     useEffect(()=>{
-        if(players !== ''){
+        if(Object.keys(players).length !== 0){
             console.log(players)
             setInGame(true)
         }

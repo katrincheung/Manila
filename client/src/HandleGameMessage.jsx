@@ -4,7 +4,8 @@ import MyGame from "./MyGame";
 
 const HandleGameMessage = ({ message, playerList, myName }) => {
 
-    const [ players, setPlayers ] = useState(playerList);
+    const [ money, setMoney ] = useState(playerList.money);
+    const [ shares, setShares ] = useState(playerList.share);
     const [ initShare, setInitShare ] = useState({})
     const [ remainShare, setRemainShare ] = useState({})
     const [ sharePrices, setSharePrices ] = useState({'brown':0, 'blue':0, 'yellow':0, 'green':0});
@@ -39,10 +40,10 @@ const HandleGameMessage = ({ message, playerList, myName }) => {
                 setBuyPhase(true);
                 break;
             case 'UPDATE_MONEY':
-                setPlayers({...players, [message[1]]:{...players[message[1]],['money']:parseInt(message[2],10)}});
+                setMoney(prevMoney => ({...prevMoney, [message[1]]:parseInt(message[2],10)}));
                 break;
             case 'UPDATE_PLAYER_SHARE':
-                setPlayers({...players, [message[1]]:{...players[message[1]],['share']:parseInt(message[2],10)}});
+                setShares(prevShares => ({...prevShares, [message[1]]:parseInt(message[2],10)}));
                 break;
             case 'UPDATE_SHARE_NUMBER':
                 setRemainShare({...remainShare, [message[1]]:remainShare[message[1]]-1});
@@ -70,7 +71,8 @@ const HandleGameMessage = ({ message, playerList, myName }) => {
                 (Object.entries(remainShare).length !== 0)?
                     <MyGame
                         myName={myName}
-                        players={players}
+                        money={money}
+                        shares={shares}
                         initShare={initShare}
                         remainShare={remainShare}
                         sharePrices={sharePrices}

@@ -5,14 +5,14 @@ import MyStatusCard from "./StatusBar/MyStatusCard";
 import ShareTable from "./StatusBar/ShareTable";
 
 
-function PlayerStatusRow({ sharePrices,shareNumbers,myName, money, shareList, players }) {
+function PlayerStatusRow({ sharePrices,shareNumbers,myName, money, shareList, shares }) {
 
     return(
         <div className={styles.row}>
             <ShareTable sharePrices={sharePrices} shareNumbers={shareNumbers}/>
-            <MyStatusCard name={myName} money={money} shareList={shareList} />
+            <MyStatusCard name={myName} money={money[myName]} shareList={shareList} />
             {
-                Object.entries(players).map(([name,value],key) => <PlayerStatusCard key={key} name={name} money={value.money} shareNumber={value.share}/> )
+                Object.entries(shares).map(([name,value],key) => <PlayerStatusCard key={key} name={name} money={money[name]} shareNumber={value}/> )
             }
 
         </div>

@@ -6,9 +6,8 @@ import {socket} from "./App";
 import PlayerStatusRow from "./components/game/PlayerStatusRow";
 import GameBoard from "./components/game/GameBoard";
 
-function MyGame({ myName, players, initShare, remainShare, sharePrices, currentAuctionPrice, isMyTurn, setIsMyTurn, auctionPhase, buyPhase, gamePhase, handleMessage }) {
-    const [ money, setMoney ] = useState(30);
-    useEffect(()=>socket.send(`UPDATE_MONEY ${money}`), [money])
+function MyGame({ myName, money, shares, initShare, remainShare, sharePrices, currentAuctionPrice, isMyTurn, setIsMyTurn, auctionPhase, buyPhase, gamePhase, handleMessage }) {
+
     const [ myShareList, setMyShareList ] = useState(initShare);
     useEffect(()=>socket.send(`UPDATE_PLAYER_SHARE ${myShareList.brown+myShareList.blue+myShareList.yellow+myShareList.green}`),[myShareList])
 
@@ -16,15 +15,17 @@ function MyGame({ myName, players, initShare, remainShare, sharePrices, currentA
     useEffect(() => setAuction(currentAuctionPrice+1),[currentAuctionPrice])
     useEffect(() => {
         if(buyPhase && isMyTurn)
-            setMoney(money-currentAuctionPrice)
-    },[buyPhase, currentAuctionPrice, setMoney])
+            socket.send(`UPDATE_MONEY ${money[myName]-currentAuctionPrice}`);
+    },[buyPhase, currentAuctionPrice])
     const addValue = val => setAuction(auction+val);
 
     const buyShare = ( color ) => {
         if(remainShare[color] > 0) {
             socket.send(`UPDATE_SHARE_NUMBER ${color}`)
             setMyShareList({...myShareList, [color]: myShareList[color] + 1});
-            (sharePrices[color] === 0)? setMoney(money-5):setMoney(money-sharePrices[color]);
+            (sharePrices[color] === 0) ?
+                socket.send(`UPDATE_MONEY ${money[myName]-5}`)
+                :socket.send(`UPDATE_MONEY ${money[myName]-sharePrices[color]}`);
             switch (sharePrices[color]) {
                 case 5:
                     socket.send(`UPDATE_GLOBAL_SHARE_PRICE ${color} 10`)
@@ -41,12 +42,12 @@ function MyGame({ myName, players, initShare, remainShare, sharePrices, currentA
             }
         }
     };
-    const pay = (fee) => setMoney(money - fee);
+    const pay = (fee) => socket.send(`UPDATE_MONEY ${money[myName] - fee}`);
 
     return(
         <div>
             <Header>Game Page</Header>
-            <PlayerStatusRow sharePrices={sharePrices} shareNumbers={remainShare} myName={myName} money={money} shareList={myShareList} players={players}/>
+            <PlayerStatusRow sharePrices={sharePrices} shareNumbers={remainShare} myName={myName} money={money} shareList={myShareList} shares={shares}/>
             {
                 (auctionPhase) ?
                     <div>
@@ -71,7 +72,6 @@ function MyGame({ myName, players, initShare, remainShare, sharePrices, currentA
                         : <h4>Master's buying phase</h4>
                     }</div>
                     : <div></div>
-
             }
             {
                 (gamePhase) ?
