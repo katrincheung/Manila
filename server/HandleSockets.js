@@ -2,7 +2,7 @@ import handleLoginRequest, { handleGameStartRequest } from "./LoginFunction.js";
 import Player from "./Player.js";
 import { bid, passAuction, updatePlayerShare, updateShareNumber } from "./AuctionFunction.js";
 import { sitPunt, deploy } from "./GameFunction.js";
-import { gameSetUp, updateMoney, updateSharePrice, startAuction } from "./ControlFunction.js";
+import {gameSetUp, updateMoney, updateSharePrice, startAuction, startGamePhase} from "./ControlFunction.js";
 
 
 let waitingRooms = {};
@@ -58,6 +58,7 @@ export default function handleSockets(ws, message) {
                 break;
             case 'UPDATE_SHARE_NUMBER':
                 updateShareNumber(ws, message[1], playingRooms[ws.CODE])
+                startGamePhase(playingRooms[ws.CODE], ws.CODE)
                 break;
             case 'UPDATE_GLOBAL_SHARE_PRICE':
                 updateSharePrice(ws, message[1], message[2], playingRooms[ws.CODE])

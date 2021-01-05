@@ -1,3 +1,5 @@
+import {initGame} from "./GameFunction.js";
+
 export function gameSetUp(players) {
     console.log('game_setup');
     let remain = [3,3,3,3]
@@ -63,3 +65,9 @@ export function startBuyPhase(players){
     resetPlayerPass(players);
 }
 
+export function startGamePhase(players, code){
+    for(let id in players){
+        players[id].ws.send(`GAME_PHASE`);
+    }
+    initGame(code);
+}

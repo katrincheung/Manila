@@ -1,4 +1,5 @@
-import {getNextPlayer, setNextPlayerTurn, startBuyPhase} from "./ControlFunction.js";
+import {getNextPlayer, setNextPlayerTurn, startBuyPhase, startGamePhase} from "./ControlFunction.js";
+
 
 
 export function bid(price, players, ws){
@@ -28,7 +29,7 @@ export function updatePlayerShare(ws, shareNum, players) {
 
 export function updateShareNumber(ws, color, players) {
     for(const [uid, player] of Object.entries(players)){
-        player.ws.send('GAME_PHASE');
         player.ws.send(`UPDATE_SHARE_NUMBER ${color}`);
     }
+    startGamePhase(players, ws.CODE);
 }

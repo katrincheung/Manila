@@ -57,7 +57,14 @@ function GameBoard({ isMyTurn, setIsMyTurn, pay, handleMessage }) {
 
     const [ portOccupier, setPortOccupier ] = useState({'A':'', 'B':'', 'C':''});
     const [ shipyardOccupier, setShipyardOccupier ] = useState({'A':'', 'B':'', 'C':''})
+
     const [ pilotOccupier,setPilotOccupier ] = useState({'large':'','small':''})
+    const [ isLargePilot, setIsLargePilot ] = useState(false);
+    const [ isSmallPilot, setIsSmallPilot ] = useState(false);
+    const pilotAction = () => {
+
+    }
+
     const [ pirateOccupier,setPirateOccupier ] = useState({'first':'','second':''})
     const [ insuranceOccupier, setInsuranceOccupier ] = useState({'insurance':''});
     const deploy = (player, occupier, setOccupier, choice) => setOccupier({...occupier, [choice]:player});
