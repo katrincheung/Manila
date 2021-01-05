@@ -31,7 +31,9 @@ function GameBoard({ isMyTurn, setIsMyTurn, pay, handleMessage }) {
 
     const puntColor = ['brown', 'blue', 'yellow', 'green'];
     const [ puntChoice, setPuntChoice ] = useState({'brown':true, 'blue':false, 'yellow':true, 'green':true});
-    const [ puntOccupier, setPuntOccupier  ] = useState({'brown':['','',''], 'blue':['','',''], 'yellow':['','',''], 'green':['','','','']});
+    // const [ puntOccupier, setPuntOccupier  ] = useState({'brown':['','',''], 'blue':['','',''], 'yellow':['','',''], 'green':['','','','']});
+    const [ puntOccupier, setPuntOccupier  ] = useState({'brown':[], 'blue':[], 'yellow':[], 'green':[]});
+    console.log(puntOccupier.brown);
     const [ location, setLocation ] = useState({'brown':9, 'blue':0, 'yellow':0, 'green':0});
     const [ puntAtPort, setPuntAtPort ] = useState([]);
     const [ puntAtShipyard, setPuntAtShipyard ] = useState([]);
@@ -45,14 +47,7 @@ function GameBoard({ isMyTurn, setIsMyTurn, pay, handleMessage }) {
         }
     },[location, setLocation])
     const sitPunt = useCallback((player, color) => {
-        const temp = puntOccupier[color];
-        for (let i = 0; i < temp.length; i++){
-            if (temp[i] === ''){
-                temp[i] = player
-                break;
-            }
-        }
-        setPuntOccupier({...puntOccupier, [color]:temp});
+        setPuntOccupier(p => ({...p, [color]:[...p[color], player]}))
     },[])
 
     const [ portOccupier, setPortOccupier ] = useState({'A':'', 'B':'', 'C':''});

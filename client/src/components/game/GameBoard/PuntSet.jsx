@@ -10,16 +10,16 @@ function PuntSet({ puntChoice, puntOccupier, location, ...restProps }) {
     return(
         <div className={styles.punt}>
             {(puntChoice.brown) ?
-                <Punt color={'brown'} fee={[2,3,4]} prize={prize.brown} occupier={puntOccupier.brown} location={location.brown} {...restProps}/>
+                <Punt color={'brown'} fee={[2,3,4]} prize={prize.brown} occupiers={puntOccupier.brown} location={location.brown} {...restProps}/>
                 : <div></div>}
             {(puntChoice.blue) ?
-                <Punt color={'blue'} fee={[3,4,5]} prize={prize.blue} occupier={puntOccupier.blue} location={location.blue} {...restProps}/>
+                <Punt color={'blue'} fee={[3,4,5]} prize={prize.blue} occupiers={puntOccupier.blue} location={location.blue} {...restProps}/>
                 : <div></div>}
             {(puntChoice.yellow) ?
-                <Punt color={'yellow'} fee={[1,2,3]} prize={prize.yellow} occupier={puntOccupier.yellow} location={location.yellow} {...restProps}/>
+                <Punt color={'yellow'} fee={[1,2,3]} prize={prize.yellow} occupiers={puntOccupier.yellow} location={location.yellow} {...restProps}/>
                 : <div></div>}
             {(puntChoice.green) ?
-                <Punt color={'green'} fee={[3,4,5,5]} prize={prize.green} occupier={puntOccupier.green} location={location.green} {...restProps}/>
+                <Punt color={'green'} fee={[3,4,5,5]} prize={prize.green} occupiers={puntOccupier.green} location={location.green} {...restProps}/>
                 : <div></div>}
         </div>
     );
