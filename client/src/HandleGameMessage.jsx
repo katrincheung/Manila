@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import MyGame from "./MyGame";
 
 
@@ -16,7 +16,7 @@ const HandleGameMessage = ({ message, playerList, myName }) => {
     const [ buyPhase, setBuyPhase ] = useState(false);
     const [ gamePhase, setGamePhase ] = useState(false);
 
-    const handleMessage = (message) => {
+    const handleMessage = useCallback(message => {
         const command = message[0];
         switch(command){
             case 'START_SHARE':
@@ -57,8 +57,8 @@ const HandleGameMessage = ({ message, playerList, myName }) => {
             default:
                 console.log(`default ${message}`);
                 break;
-        }
-    }
+        }}, [message])
+
     useEffect(() => {
         console.log(`whole message = ${message}`);
         handleMessage(message);
