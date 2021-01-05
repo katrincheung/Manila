@@ -6,7 +6,7 @@ import {socket} from "./App";
 import PlayerStatusRow from "./components/game/PlayerStatusRow";
 import GameBoard from "./components/game/GameBoard";
 
-function MyGame({ myName, money, shares, initShare, remainShare, sharePrices, currentAuctionPrice, isMyTurn, setIsMyTurn, auctionPhase, buyPhase, gamePhase, handleMessage }) {
+function MyGame({ myName, money, setMoney, shares, initShare, remainShare, sharePrices, currentAuctionPrice, isMyTurn, setIsMyTurn, auctionPhase, buyPhase, gamePhase, handleMessage }) {
 
     const [ myShareList, setMyShareList ] = useState(initShare);
     useEffect(()=>socket.send(`UPDATE_PLAYER_SHARE ${myShareList.brown+myShareList.blue+myShareList.yellow+myShareList.green}`),[myShareList])
@@ -75,7 +75,7 @@ function MyGame({ myName, money, shares, initShare, remainShare, sharePrices, cu
             }
             {
                 (gamePhase) ?
-                    <GameBoard isMyTurn={isMyTurn} setIsMyTurn={setIsMyTurn} handleMessage={handleMessage} pay={pay}/>:<div></div>
+                    <GameBoard isMyTurn={isMyTurn} setIsMyTurn={setIsMyTurn} handleMessage={handleMessage} pay={pay} setMoney={setMoney} money={money}/>:<div></div>
             }
 
         </div>

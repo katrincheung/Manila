@@ -40,9 +40,7 @@ function resetPlayerPass(players){
 
 export function updateMoney(ws, money, players) {
     for(const [uid, player] of Object.entries(players)){
-        if(player.name !== ws.NAME){
-            player.ws.send(`UPDATE_MONEY ${ws.NAME} ${money}`)
-        }
+        player.ws.send(`UPDATE_MONEY ${ws.NAME} ${money}`)
     }
 }
 

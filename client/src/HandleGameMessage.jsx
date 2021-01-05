@@ -72,6 +72,7 @@ const HandleGameMessage = ({ message, playerList, myName }) => {
                     <MyGame
                         myName={myName}
                         money={money}
+                        setMoney={setMoney}
                         shares={shares}
                         initShare={initShare}
                         remainShare={remainShare}

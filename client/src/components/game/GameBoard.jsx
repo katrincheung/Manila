@@ -9,7 +9,7 @@ import InsuranceSet from "./GameBoard/InsuranceSet";
 import PilotSet from "./GameBoard/PilotSet";
 
 
-function GameBoard({ isMyTurn, setIsMyTurn, pay, handleMessage }) {
+function GameBoard({ isMyTurn, setIsMyTurn, pay, handleMessage, setMoney, money }) {
 
     const [ gameMessage, setGameMessage] = useState('');
     const checkTurn = (func) => {
@@ -29,7 +29,7 @@ function GameBoard({ isMyTurn, setIsMyTurn, pay, handleMessage }) {
         }
     },[round, setRound])
 
-    const puntPrize = {'brown':18, 'blue':36, 'yellow':36, 'green':36};
+    const puntPrize = {'brown':24, 'blue':36, 'yellow':18, 'green':36};
     const [ puntChoice, setPuntChoice ] = useState({'brown':true, 'blue':false, 'yellow':true, 'green':true});
     const [ puntOccupier, setPuntOccupier  ] = useState({'brown':[], 'blue':[], 'yellow':[], 'green':[]});
     const [ location, setLocation ] = useState({'brown':9, 'blue':0, 'yellow':0, 'green':0});
@@ -64,6 +64,7 @@ function GameBoard({ isMyTurn, setIsMyTurn, pay, handleMessage }) {
     const updatePortShipyard = useCallback(() => {
         let portList = [];
         let shipyardList = [];
+        let moneyUpdate = {...money};
         console.log('port and shipyard update function called')
         for(let color in puntChoice){
             if (puntChoice[color]){
@@ -71,7 +72,7 @@ function GameBoard({ isMyTurn, setIsMyTurn, pay, handleMessage }) {
                     portList.push(color)
                     setPuntChoice(p => ({...p, [color]:false}));
                     let moneyToAdd = puntPrize[color]/puntOccupier[color].length;
-
+                    puntOccupier[color].forEach(player => {moneyUpdate[player]+=moneyToAdd});
                 }
                 else if (round === 3){
                     shipyardList.push(color)
@@ -80,6 +81,7 @@ function GameBoard({ isMyTurn, setIsMyTurn, pay, handleMessage }) {
         }
         setPuntAtPort(p => [...p, ...portList]);
         setPuntAtShipyard(shipyardList);
+        setMoney({...moneyUpdate});
     }, [round, location, puntChoice])
     useEffect(() => updatePortShipyard(), [round]);
 
