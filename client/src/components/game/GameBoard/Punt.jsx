@@ -10,7 +10,7 @@ function Punt({ color, fee, prize, location, pay, occupiers, checkTurn }) {
     }
 
     const occupier = (key) => {
-        return ((occupiers.length-1)===key)?occupiers[key]:''
+        return ((occupiers.length-1)>=key)?occupiers[key]:''
     }
 
     return (

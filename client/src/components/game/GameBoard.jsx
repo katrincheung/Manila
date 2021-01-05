@@ -29,15 +29,12 @@ function GameBoard({ isMyTurn, setIsMyTurn, pay, handleMessage }) {
         }
     },[round, setRound])
 
-    const puntColor = ['brown', 'blue', 'yellow', 'green'];
+    const puntPrize = {'brown':18, 'blue':36, 'yellow':36, 'green':36};
     const [ puntChoice, setPuntChoice ] = useState({'brown':true, 'blue':false, 'yellow':true, 'green':true});
-    // const [ puntOccupier, setPuntOccupier  ] = useState({'brown':['','',''], 'blue':['','',''], 'yellow':['','',''], 'green':['','','','']});
     const [ puntOccupier, setPuntOccupier  ] = useState({'brown':[], 'blue':[], 'yellow':[], 'green':[]});
-    console.log(puntOccupier.brown);
     const [ location, setLocation ] = useState({'brown':9, 'blue':0, 'yellow':0, 'green':0});
     const [ puntAtPort, setPuntAtPort ] = useState([]);
     const [ puntAtShipyard, setPuntAtShipyard ] = useState([]);
-
 
     useEffect(() => {
         for (let color in puntChoice){
@@ -73,11 +70,11 @@ function GameBoard({ isMyTurn, setIsMyTurn, pay, handleMessage }) {
                 if (location[color]>13){
                     portList.push(color)
                     setPuntChoice(p => ({...p, [color]:false}));
-                    console.log(color+'true')
+                    let moneyToAdd = puntPrize[color]/puntOccupier[color].length;
+
                 }
                 else if (round === 3){
                     shipyardList.push(color)
-                    console.log(color+'false')
                 }
             }
         }

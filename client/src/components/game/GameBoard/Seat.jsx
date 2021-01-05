@@ -3,7 +3,6 @@ import styles from './Seat.module.css';
 
 function Seat({ isEnable, sit, fee, occupier }) {
 
-    console.log(occupier)
     return(
         <div>
             {
