@@ -22,15 +22,10 @@ function GameBoard({ isMyTurn, setIsMyTurn, pay, handleMessage, setMoney, money 
     }
 
     const [ round, setRound ] = useState(0);
-    useEffect(() => {
-        console.log('round '+round)
-        if(round===3){
-            console.log('after 3 rounds');
-        }
-    },[round, setRound])
 
     const puntPrize = {'brown':24, 'blue':36, 'yellow':18, 'green':36};
     const [ puntChoice, setPuntChoice ] = useState({'brown':true, 'blue':false, 'yellow':true, 'green':true});
+    const [ remainPunt, setRemainPunt ] = useState(3);
     const [ puntOccupier, setPuntOccupier  ] = useState({'brown':[], 'blue':[], 'yellow':[], 'green':[]});
     const [ location, setLocation ] = useState({'brown':9, 'blue':0, 'yellow':0, 'green':0});
     const [ puntAtPort, setPuntAtPort ] = useState([]);
@@ -49,17 +44,56 @@ function GameBoard({ isMyTurn, setIsMyTurn, pay, handleMessage, setMoney, money 
 
     const [ portOccupier, setPortOccupier ] = useState({'A':'', 'B':'', 'C':''});
     const [ shipyardOccupier, setShipyardOccupier ] = useState({'A':'', 'B':'', 'C':''})
+    const portPrize = (choice, prize, occupier) => {
+        let player = occupier[choice]
+        if(player!==''){
+            console.log(player)
+            setMoney(prev => ({...prev, [player]:money[player]+prize}))
+        }
+    }
+    const releasePortResult = () => {
+        if(puntAtPort.length===0 && puntAtShipyard.length===3){
+            console.log('case1')
+            portPrize('A', 6, shipyardOccupier);
+            portPrize('B', 8, shipyardOccupier);
+            portPrize('C', 15, shipyardOccupier);
+        }else if(puntAtPort.length===1 && puntAtShipyard.length===2){
+            console.log('case2')
+            portPrize('A', 6, shipyardOccupier);
+            portPrize('B', 8, shipyardOccupier);
+            portPrize('A', 6, portOccupier);
+        }else if(puntAtPort.length===2 && puntAtShipyard.length===1){
+            console.log('case3')
+            portPrize('A', 6, shipyardOccupier);
+            portPrize('A', 6, portOccupier);
+            portPrize('B', 8, portOccupier);
+        }else if(puntAtPort.length===3 && puntAtShipyard.length===1){
+            console.log('case4')
+            portPrize('A', 6, portOccupier);
+            portPrize('B', 8, portOccupier);
+            portPrize('C', 15, portOccupier);
+        }
+    }
+    useEffect(()=>{
+        console.log('port counted')
+        releasePortResult()
+    },[puntAtPort, puntAtShipyard])
 
     const [ pilotOccupier,setPilotOccupier ] = useState({'large':'','small':''})
-    const [ isLargePilot, setIsLargePilot ] = useState(false);
-    const [ isSmallPilot, setIsSmallPilot ] = useState(false);
-    const pilotAction = () => {
-
-    }
-
+    // const [ isLargePilot, setIsLargePilot ] = useState(false);
+    // const [ isSmallPilot, setIsSmallPilot ] = useState(false);
+    // const pilotAction = () => {
+    //
+    // }
     const [ pirateOccupier,setPirateOccupier ] = useState({'first':'','second':''})
     const [ insuranceOccupier, setInsuranceOccupier ] = useState({'insurance':''});
     const deploy = (player, occupier, setOccupier, choice) => setOccupier({...occupier, [choice]:player});
+    useEffect(() => {
+        console.log('round '+round)
+        if(round===3){
+            console.log('after 3 rounds');
+        }
+    },[round, setRound])
 
     const updatePortShipyard = useCallback(() => {
         let portList = [];
@@ -71,11 +105,13 @@ function GameBoard({ isMyTurn, setIsMyTurn, pay, handleMessage, setMoney, money 
                 if (location[color]>13){
                     portList.push(color)
                     setPuntChoice(p => ({...p, [color]:false}));
+                    setRemainPunt(p => p-1);
                     let moneyToAdd = puntPrize[color]/puntOccupier[color].length;
                     puntOccupier[color].forEach(player => {moneyUpdate[player]+=moneyToAdd});
                 }
                 else if (round === 3){
-                    shipyardList.push(color)
+                    shipyardList.push(color);
+                    setRemainPunt(p => p-1);
                 }
             }
         }
