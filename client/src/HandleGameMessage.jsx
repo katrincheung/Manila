@@ -5,10 +5,10 @@ import MyGame from "./MyGame";
 const HandleGameMessage = ({ message, playerList, myName }) => {
 
     const [ money, setMoney ] = useState(playerList.money);
-    const updateMoney = (player, val) => {
+    const updateMoney = useCallback((player, val) => {
         console.log(player,val);
         setMoney(prev => ({...prev, [player]:prev[player]+val}))
-    }
+    }, [setMoney])
     const [ shares, setShares ] = useState(playerList.share);
     const [ initShare, setInitShare ] = useState({})
     const [ remainShare, setRemainShare ] = useState({})
@@ -50,10 +50,10 @@ const HandleGameMessage = ({ message, playerList, myName }) => {
                 setShares(prevShares => ({...prevShares, [message[1]]:parseInt(message[2],10)}));
                 break;
             case 'UPDATE_SHARE_NUMBER':
-                setRemainShare({...remainShare, [message[1]]:remainShare[message[1]]-1});
+                setRemainShare(prev => ({...prev, [message[1]]:prev[message[1]]-1}));
                 break;
             case 'UPDATE_SHARE_PRICE':
-                setSharePrices({...sharePrices, [message[1]]:parseInt(message[2],10)});
+                setSharePrices(prev => ({...prev, [message[1]]:prev[message[1]]-1}));
                 break;
             case 'GAME_PHASE':
                 setBuyPhase(false);
@@ -62,12 +62,12 @@ const HandleGameMessage = ({ message, playerList, myName }) => {
             default:
                 console.log(`default ${message}`);
                 break;
-        }}, [message])
+        }}, [updateMoney])
 
     useEffect(() => {
         console.log(`whole message = ${message}`);
         handleMessage(message);
-    },[message, setCurrentAuctionPrice, setIsMyTurn],);
+    },[message, handleMessage, setCurrentAuctionPrice, setIsMyTurn]);
 
     return (
         <div>

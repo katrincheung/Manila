@@ -26,7 +26,6 @@ function GameBoard({ isMyTurn, setIsMyTurn, pay, handleMessage, updateMoney }) {
 
     const puntPrize = {'brown':24, 'blue':36, 'yellow':18, 'green':36};
     const [ puntChoice, setPuntChoice ] = useState({'brown':true, 'blue':false, 'yellow':true, 'green':true});
-    const [ remainPunt, setRemainPunt ] = useState(3);
     const [ puntOccupier, setPuntOccupier  ] = useState({'brown':[], 'blue':[], 'yellow':[], 'green':[]});
     const [ location, setLocation ] = useState({'brown':9, 'blue':0, 'yellow':0, 'green':0});
     const [ puntAtPort, setPuntAtPort ] = useState([]);
@@ -85,7 +84,6 @@ function GameBoard({ isMyTurn, setIsMyTurn, pay, handleMessage, updateMoney }) {
         }
     }
     useEffect(()=>{
-        console.log('port counted')
         releasePortResult()
     },[puntAtPort, puntAtShipyard])
 
@@ -120,13 +118,11 @@ function GameBoard({ isMyTurn, setIsMyTurn, pay, handleMessage, updateMoney }) {
                 if (location[color]>13){
                     portList.push(color)
                     setPuntChoice(p => ({...p, [color]:false}));
-                    setRemainPunt(p => p-1);
                     let moneyToAdd = puntPrize[color]/puntOccupier[color].length;
                     puntOccupier[color].forEach(player => updateMoney(player, moneyToAdd));
                 }
                 else if (round === 3){
                     shipyardList.push(color);
-                    setRemainPunt(p => p-1);
                 }
             }
         }
