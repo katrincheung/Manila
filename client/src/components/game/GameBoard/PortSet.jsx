@@ -5,8 +5,6 @@ import { socket } from "../../../App";
 
 function PortSet({ occupier, pay, checkTurn }) {
 
-    const prize = [6,8,15];
-
     const sit = (choice, fee) => {
         pay(fee)
         socket.send(`DEPLOY PORT ${choice}`);

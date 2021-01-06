@@ -6,7 +6,7 @@ import {socket} from "./App";
 import PlayerStatusRow from "./components/game/PlayerStatusRow";
 import GameBoard from "./components/game/GameBoard";
 
-function MyGame({ myName, money, setMoney, shares, initShare, remainShare, sharePrices, currentAuctionPrice, isMyTurn, setIsMyTurn, auctionPhase, buyPhase, gamePhase, handleMessage }) {
+function MyGame({ myName, money, shares, initShare, remainShare, sharePrices, currentAuctionPrice, isMyTurn, setIsMyTurn, auctionPhase, buyPhase, gamePhase, handleMessage, updateMoney }) {
 
     const [ myShareList, setMyShareList ] = useState(initShare);
     useEffect(()=>socket.send(`UPDATE_PLAYER_SHARE ${myShareList.brown+myShareList.blue+myShareList.yellow+myShareList.green}`),[myShareList])
@@ -15,7 +15,7 @@ function MyGame({ myName, money, setMoney, shares, initShare, remainShare, share
     useEffect(() => setAuction(currentAuctionPrice+1),[currentAuctionPrice])
     useEffect(() => {
         if(buyPhase && isMyTurn)
-            socket.send(`UPDATE_MONEY ${money[myName]-currentAuctionPrice}`);
+            pay(currentAuctionPrice)
     },[buyPhase, currentAuctionPrice])
     const addValue = val => setAuction(auction+val);
 
@@ -23,9 +23,7 @@ function MyGame({ myName, money, setMoney, shares, initShare, remainShare, share
         if(remainShare[color] > 0) {
             socket.send(`UPDATE_SHARE_NUMBER ${color}`)
             setMyShareList({...myShareList, [color]: myShareList[color] + 1});
-            (sharePrices[color] === 0) ?
-                socket.send(`UPDATE_MONEY ${money[myName]-5}`)
-                :socket.send(`UPDATE_MONEY ${money[myName]-sharePrices[color]}`);
+            (sharePrices[color] === 0) ? pay(5) : pay(sharePrices[color]);
             switch (sharePrices[color]) {
                 case 5:
                     socket.send(`UPDATE_GLOBAL_SHARE_PRICE ${color} 10`)
@@ -42,7 +40,8 @@ function MyGame({ myName, money, setMoney, shares, initShare, remainShare, share
             }
         }
     };
-    const pay = (fee) => socket.send(`UPDATE_MONEY ${money[myName] - fee}`);
+    const pay = (fee) => socket.send(`UPDATE_MONEY ${-fee}`);
+
 
     return(
         <div>
@@ -75,7 +74,7 @@ function MyGame({ myName, money, setMoney, shares, initShare, remainShare, share
             }
             {
                 (gamePhase) ?
-                    <GameBoard isMyTurn={isMyTurn} setIsMyTurn={setIsMyTurn} handleMessage={handleMessage} pay={pay} setMoney={setMoney} money={money}/>:<div></div>
+                    <GameBoard isMyTurn={isMyTurn} setIsMyTurn={setIsMyTurn} handleMessage={handleMessage} pay={pay} updateMoney={updateMoney}/>:<div></div>
             }
 
         </div>

@@ -9,7 +9,8 @@ import InsuranceSet from "./GameBoard/InsuranceSet";
 import PilotSet from "./GameBoard/PilotSet";
 
 
-function GameBoard({ isMyTurn, setIsMyTurn, pay, handleMessage, setMoney, money }) {
+
+function GameBoard({ isMyTurn, setIsMyTurn, pay, handleMessage, updateMoney }) {
 
     const [ gameMessage, setGameMessage] = useState('');
     const checkTurn = (func) => {
@@ -31,6 +32,7 @@ function GameBoard({ isMyTurn, setIsMyTurn, pay, handleMessage, setMoney, money 
     const [ puntAtPort, setPuntAtPort ] = useState([]);
     const [ puntAtShipyard, setPuntAtShipyard ] = useState([]);
 
+    // Set the unchoosed punt location back to 0 if needed
     useEffect(() => {
         for (let color in puntChoice){
             if (!puntChoice[color] && location[color]!==0) {
@@ -38,40 +40,48 @@ function GameBoard({ isMyTurn, setIsMyTurn, pay, handleMessage, setMoney, money 
             }
         }
     },[location, setLocation])
+
+
     const sitPunt = useCallback((player, color) => {
         setPuntOccupier(p => ({...p, [color]:[...p[color], player]}))
     },[])
 
     const [ portOccupier, setPortOccupier ] = useState({'A':'', 'B':'', 'C':''});
     const [ shipyardOccupier, setShipyardOccupier ] = useState({'A':'', 'B':'', 'C':''})
-    const portPrize = (choice, prize, occupier) => {
-        let player = occupier[choice]
-        if(player!==''){
-            console.log(player)
-            setMoney(prev => ({...prev, [player]:money[player]+prize}))
+
+    // check if have occupier first
+    // locally give money to occupier
+    const portPrize = (prize, occupier) => {
+        if(occupier!==''){
+            updateMoney(occupier, prize)
         }
     }
+
+    // release port, shipyard and insurance result after all punt finish
     const releasePortResult = () => {
         if(puntAtPort.length===0 && puntAtShipyard.length===3){
             console.log('case1')
-            portPrize('A', 6, shipyardOccupier);
-            portPrize('B', 8, shipyardOccupier);
-            portPrize('C', 15, shipyardOccupier);
+            portPrize(6, shipyardOccupier.A);
+            portPrize(8, shipyardOccupier.B);
+            portPrize(15, shipyardOccupier.C);
+            portPrize(-29, insuranceOccupier.insurance)
         }else if(puntAtPort.length===1 && puntAtShipyard.length===2){
             console.log('case2')
-            portPrize('A', 6, shipyardOccupier);
-            portPrize('B', 8, shipyardOccupier);
-            portPrize('A', 6, portOccupier);
+            portPrize(6, shipyardOccupier.A);
+            portPrize(8, shipyardOccupier.B);
+            portPrize(6, portOccupier.A);
+            portPrize(-14, insuranceOccupier.insurance)
         }else if(puntAtPort.length===2 && puntAtShipyard.length===1){
             console.log('case3')
-            portPrize('A', 6, shipyardOccupier);
-            portPrize('A', 6, portOccupier);
-            portPrize('B', 8, portOccupier);
+            portPrize(6, shipyardOccupier.A);
+            portPrize(6, portOccupier.A);
+            portPrize(8, portOccupier.B);
+            portPrize(-6, insuranceOccupier.insurance)
         }else if(puntAtPort.length===3 && puntAtShipyard.length===1){
             console.log('case4')
-            portPrize('A', 6, portOccupier);
-            portPrize('B', 8, portOccupier);
-            portPrize('C', 15, portOccupier);
+            portPrize(6, portOccupier.A);
+            portPrize(8, portOccupier.B);
+            portPrize(15, portOccupier.C);
         }
     }
     useEffect(()=>{
@@ -87,7 +97,11 @@ function GameBoard({ isMyTurn, setIsMyTurn, pay, handleMessage, setMoney, money 
     // }
     const [ pirateOccupier,setPirateOccupier ] = useState({'first':'','second':''})
     const [ insuranceOccupier, setInsuranceOccupier ] = useState({'insurance':''});
+
+    // set occupier, used by all position except punt
     const deploy = (player, occupier, setOccupier, choice) => setOccupier({...occupier, [choice]:player});
+
+    // check is round 3 done
     useEffect(() => {
         console.log('round '+round)
         if(round===3){
@@ -95,10 +109,11 @@ function GameBoard({ isMyTurn, setIsMyTurn, pay, handleMessage, setMoney, money 
         }
     },[round, setRound])
 
+    // add punt to port whenever location >13
+    // add punt to shipyard when round 3 if location <13
     const updatePortShipyard = useCallback(() => {
         let portList = [];
         let shipyardList = [];
-        let moneyUpdate = {...money};
         console.log('port and shipyard update function called')
         for(let color in puntChoice){
             if (puntChoice[color]){
@@ -107,7 +122,7 @@ function GameBoard({ isMyTurn, setIsMyTurn, pay, handleMessage, setMoney, money 
                     setPuntChoice(p => ({...p, [color]:false}));
                     setRemainPunt(p => p-1);
                     let moneyToAdd = puntPrize[color]/puntOccupier[color].length;
-                    puntOccupier[color].forEach(player => {moneyUpdate[player]+=moneyToAdd});
+                    puntOccupier[color].forEach(player => updateMoney(player, moneyToAdd));
                 }
                 else if (round === 3){
                     shipyardList.push(color);
@@ -117,7 +132,6 @@ function GameBoard({ isMyTurn, setIsMyTurn, pay, handleMessage, setMoney, money 
         }
         setPuntAtPort(p => [...p, ...portList]);
         setPuntAtShipyard(shipyardList);
-        setMoney({...moneyUpdate});
     }, [round, location, puntChoice])
     useEffect(() => updatePortShipyard(), [round]);
 

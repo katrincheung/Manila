@@ -5,8 +5,6 @@ import { socket } from "../../../App";
 
 function ShipyardSet({ occupier, pay, checkTurn }) {
 
-    const prize = [6,8,15];
-
     const sit = (choice, fee) => {
         pay(fee)
         socket.send(`DEPLOY SHIPYARD ${choice}`);
