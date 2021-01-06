@@ -45,7 +45,6 @@ function MyGame({ myName, money, shares, initShare, remainShare, sharePrices, cu
 
     return(
         <div>
-            <Header>Game Page</Header>
             <PlayerStatusRow sharePrices={sharePrices} shareNumbers={remainShare} myName={myName} money={money} shareList={myShareList} shares={shares}/>
             {
                 (auctionPhase) ?
