@@ -5,12 +5,12 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableBody from "@material-ui/core/TableBody";
 import {TableContainer} from "@material-ui/core";
-import TableButton from "./table/tableButton";
-import TCell from "./table/TCell";
+import TableButton from "../../common/table/tableButton";
+import TCell from "../../common/table/TCell";
 
 
 
-function AuctionShareTable({ sharePrices,shareNumbers, priceUp }) {
+const AuctionShareTable = ({ sharePrices,shareNumbers, priceUp }) => {
     
     return(
         <div className={styles.center}>
