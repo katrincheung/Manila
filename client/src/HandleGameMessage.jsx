@@ -53,7 +53,7 @@ const HandleGameMessage = ({ message, playerList, myName }) => {
                 setRemainShare(prev => ({...prev, [message[1]]:prev[message[1]]-1}));
                 break;
             case 'UPDATE_SHARE_PRICE':
-                setSharePrices(prev => ({...prev, [message[1]]:prev[message[1]]-1}));
+                setSharePrices(prev => ({...prev, [message[1]]:parseInt(message[2],10)}));
                 break;
             case 'GAME_PHASE':
                 setBuyPhase(false);
