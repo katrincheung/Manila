@@ -5,6 +5,7 @@ export default class Player {
         this.next = null;
         this.pass = false;
         this.master = false;
+        this.shares = [];
     }
 
 }
