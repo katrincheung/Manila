@@ -3,6 +3,7 @@ import Player from "./Player.js";
 import { bid, passAuction, updatePlayerShare, updateShareNumber } from "./AuctionFunction.js";
 import { sitPunt, deploy } from "./GameFunction.js";
 import {gameSetUp, updateMoney, updateSharePrice, startAuction, startGamePhase} from "./ControlFunction.js";
+import Game from "./Game.js";
 
 
 let waitingRooms = {};
@@ -31,10 +32,11 @@ export default function handleSockets(ws, message) {
                 waitingRooms = handleLoginRequest(ws.CODE, waitingRooms, player);
                 break;
             case 'GAME_START':
-                playingRooms[ws.CODE] = handleGameStartRequest(waitingRooms[ws.CODE]);
+                playingRooms[ws.CODE] = new Game(ws.CODE);
+                playingRooms[ws.CODE].players = handleGameStartRequest(waitingRooms[ws.CODE]);
                 inGame = true;
                 gameSetUp(playingRooms[ws.CODE])
-                startAuction(playingRooms[ws.CODE])
+                startAuction(playingRooms[ws.CODE].players)
                 ws.send('YOUR_TURN');
                 break;
             default:
@@ -45,7 +47,7 @@ export default function handleSockets(ws, message) {
     else{
         switch (command){
             case 'BID':
-                bid(message[1], playingRooms[ws.CODE], ws);
+                bid(message[1], playingRooms[ws.CODE].players, ws);
                 break;
             case 'PASS':
                 passAuction(playingRooms[ws.CODE], ws)

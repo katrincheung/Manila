@@ -9,18 +9,18 @@ export function bid(price, players, ws){
     setNextPlayerTurn(players, ws)
 }
 
-export function passAuction(players, ws){
-    players[ws.UID].pass = true;
-    const nextPlayer = getNextPlayer(players, ws);
+export function passAuction(game, ws){
+    game.players[ws.UID].pass = true;
+    const nextPlayer = getNextPlayer(game.players, ws);
     nextPlayer.ws.send(`YOUR_TURN`);
-    if (getNextPlayer(players, nextPlayer.ws) === nextPlayer){
+    if (getNextPlayer(game.players, nextPlayer.ws) === nextPlayer){
         nextPlayer.master = true;
-        startBuyPhase(players)
+        startBuyPhase(game.players)
     }
 }
 
-export function updatePlayerShare(ws, shareNum, players) {
-    for(const [uid, player] of Object.entries(players)){
+export function updatePlayerShare(ws, shareNum, game) {
+    for(const [uid, player] of Object.entries(game.players)){
         if(player.name !== ws.NAME){
             player.ws.send(`UPDATE_PLAYER_SHARE ${ws.NAME} ${shareNum}`)
         }

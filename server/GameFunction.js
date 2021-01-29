@@ -1,11 +1,5 @@
 import {getNextPlayer} from "./ControlFunction.js";
-import GameInfo from "./GameInfo.js";
 
-const game = {};
-
-export function initGame(code){
-    game[code] = new GameInfo(code);
-}
 
 export function sitPunt(ws, color, players){
     for(const [uid, player] of Object.entries(players)){

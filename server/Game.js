@@ -1,4 +1,4 @@
-export default class GameInfo{
+export default class Game{
     constructor(code) {
         this.code = code;
         this.round = 0; // 0,1,2 round of game
@@ -8,8 +8,16 @@ export default class GameInfo{
         this.pirate = [];
     }
 
+    remain_shares = [];
+    players = {};
+    resetPass(){
+        for(const [uid, player] of Object.entries(this.players)){
+            player.pass = false;
+        }
+    }
+
     // call after each round
-    reset() {
+    resetForNextRound() {
         this.turn = 0;
         this.smallPilot = 0;
         this.largePilot = 0;

@@ -1,9 +1,7 @@
-import {initGame} from "./GameFunction.js";
-
-export function gameSetUp(players) {
+export function gameSetUp(game) {
     console.log('game_setup');
     let remain = [3,3,3,3]
-    for(let playerId in players){
+    for(let playerId in game.players){
         let i = 0;
         let share = [0,0,0,0];
         while (i < 2){
@@ -14,10 +12,12 @@ export function gameSetUp(players) {
                 i+=1;
             }
         }
-        players[playerId].ws.send(`START_SHARE ${share.join(' ')}`);
+        game.players[playerId].shares = share;
+        game.players[playerId].ws.send(`START_SHARE ${share.join(' ')}`);
     }
-    for(let playerId in players){
-        players[playerId].ws.send(`REMAIN_SHARE ${remain.join(' ')}`);
+    game.remain_shares = remain;
+    for(let playerId in game.players){
+        game.players[playerId].ws.send(`REMAIN_SHARE ${remain.join(' ')}`);
     }
 }
 
@@ -32,16 +32,11 @@ export function setNextPlayerTurn(players, ws){
     getNextPlayer(players, ws).ws.send('YOUR_TURN');
 }
 
-function resetPlayerPass(players){
-    for(const [uid, player] of Object.entries(players)){
-        player.pass = false;
-    }
-}
-
-export function updateMoney(ws, money, players) {
-    for(const [uid, player] of Object.entries(players)){
+export function updateMoney(ws, money, game) {
+    for(const [uid, player] of Object.entries(game.players)){
         player.ws.send(`UPDATE_MONEY ${ws.NAME} ${money}`)
     }
+    game.players[ws.UID].money += parseInt(money, 10);
 }
 
 export function updateSharePrice(ws, color, price, players) {
@@ -60,12 +55,10 @@ export function startBuyPhase(players){
     for(let id in players){
         players[id].ws.send(`BUY_PHASE`);
     }
-    resetPlayerPass(players);
 }
 
 export function startGamePhase(players, code){
     for(let id in players){
         players[id].ws.send(`GAME_PHASE`);
     }
-    initGame(code);
 }
