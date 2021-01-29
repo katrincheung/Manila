@@ -15,7 +15,7 @@ export function gameSetUp(game) {
         game.players[playerId].shares = share;
         game.players[playerId].ws.send(`START_SHARE ${share.join(' ')}`);
     }
-    game.remain_shares = remain;
+    game.remain_shares = [remain[0]+2,remain[1]+2,remain[2]+2,remain[3]+2];
     for(let playerId in game.players){
         game.players[playerId].ws.send(`REMAIN_SHARE ${remain.join(' ')}`);
     }
@@ -57,7 +57,7 @@ export function startBuyPhase(players){
     }
 }
 
-export function startGamePhase(players, code){
+export function startGamePhase(players){
     for(let id in players){
         players[id].ws.send(`GAME_PHASE`);
     }

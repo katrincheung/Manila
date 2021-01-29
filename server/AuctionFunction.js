@@ -27,9 +27,27 @@ export function updatePlayerShare(ws, shareNum, game) {
     }
 }
 
-export function updateShareNumber(ws, color, players) {
-    for(const [uid, player] of Object.entries(players)){
-        player.ws.send(`UPDATE_SHARE_NUMBER ${color}`);
+export function updateShareNumber(ws, color, game) {
+    switch (color){
+        case 'brown':
+            game.remain_shares[0] -= 1;
+            game.players[ws.UID].shares[0] += 1;
+            break;
+        case 'blue':
+            game.remain_shares[1] -= 1;
+            game.players[ws.UID].shares[1] += 1;
+            break;
+        case 'yellow':
+            game.remain_shares[2] -= 1;
+            game.players[ws.UID].shares[2] += 1;
+            break;
+        default:
+            game.remain_shares[3] -= 1;
+            game.players[ws.UID].shares[3] += 1;
+            break;
     }
-    startGamePhase(players, ws.CODE);
+    for(let id in game.players){
+        game.players[id].ws.send(`UPDATE_SHARE_NUMBER ${color}`);
+    }
+    startGamePhase(game.players);
 }
