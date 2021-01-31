@@ -77,7 +77,7 @@ const HandleMessage = ({ message }) => {
                         isHost={isHost}
                         nameList={nameList}
                     /> :
-                    <HandleGameMessage message={message} playerList={players} myName={myName}/>
+                    <HandleGameMessage msg={message} playerList={players} myName={myName}/>
             }
         </div>
     );

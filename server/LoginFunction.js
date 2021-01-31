@@ -13,15 +13,46 @@ export default function handleLoginRequest(code, rooms, player) {
     return (rooms);
 }
 
-export function handleGameStartRequest(room) {
-    const playingRoom = {};
-    room.forEach((player,i) => {
-        player.ws.send(`GAME_START`);
-        playingRoom[player.ws.UID] = player;
-        if(i !== room.length-1){
-            player.next = room[i+1];}
+
+/*
+change [player1, player2, player3] to {id1:player1, id2:player2, id3:player3}
+add players.next pointing to next players
+ */
+export function handleGameStartRequest(game, playerList) {
+    const playersMap = {};
+    playerList.forEach((player,i) => {
+        playersMap[player.ws.UID] = player;
+        if(i !== playerList.length-1){
+            player.next = playerList[i+1];}
         else{
-            player.next = room[0];}
+            player.next = playerList[0];}
     });
-    return playingRoom;
+    game.players = playersMap;
+    game.send(`GAME_START`)
+    gameSetUp(game)
+}
+
+
+/*
+give shares when starting the game
+only called in handleGameStartRequest
+ */
+function gameSetUp(game) {
+    let remain = [3,3,3,3]
+    for(let playerId in game.players){
+        let i = 0;
+        let share = [0,0,0,0];
+        while (i < 2){
+            let index = Math.floor(Math.random() * 4);
+            if(remain[index] > 0){
+                remain[index]-=1;
+                share[index]+=1;
+                i+=1;
+            }
+        }
+        game.players[playerId].shares = share;
+        game.players[playerId].ws.send(`START_SHARE ${share.join(' ')}`);
+    }
+    game.remain_shares = {'brown':remain[0]+2,'blue':remain[1]+2,'yellow':remain[2]+2,'green':remain[3]+2};
+    game.updateRemainShares()
 }

@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import MyGame from "./MyGame";
 
 
-const HandleGameMessage = ({ message, playerList, myName }) => {
+const HandleGameMessage = ({ msg, playerList, myName }) => {
 
     const [ money, setMoney ] = useState(playerList.money);
     const updateMoney = useCallback((player, val) => {
@@ -21,17 +21,17 @@ const HandleGameMessage = ({ message, playerList, myName }) => {
     const [ buyPhase, setBuyPhase ] = useState(false);
     const [ gamePhase, setGamePhase ] = useState(false);
 
-    const handleMessage = useCallback(message => {
-        const command = message[0];
+    const handleMessage = useCallback(msg => {
+        const command = msg[0];
         switch(command){
             case 'START_SHARE':
-                setInitShare({'brown':parseInt(message[1],10), 'blue':parseInt(message[2],10), 'yellow':parseInt(message[3],10), 'green':parseInt(message[4],10)})
+                setInitShare({'brown':parseInt(msg[1],10), 'blue':parseInt(msg[2],10), 'yellow':parseInt(msg[3],10), 'green':parseInt(msg[4],10)})
                 break;
-            case 'REMAIN_SHARE':
-                setRemainShare({'brown':parseInt(message[1],10)+2, 'blue':parseInt(message[2],10)+2, 'yellow':parseInt(message[3],10)+2, 'green':parseInt(message[4],10)+2})
+            case 'UPDATE_REMAIN_SHARES':
+                setRemainShare({'brown':parseInt(msg[1],10), 'blue':parseInt(msg[2],10), 'yellow':parseInt(msg[3],10), 'green':parseInt(msg[4],10)})
                 break;
             case 'CURRENT_PRICE':
-                setCurrentAuctionPrice(parseInt(message[1],10));
+                setCurrentAuctionPrice(parseInt(msg[1],10));
                 break;
             case 'YOUR_TURN':
                 setIsMyTurn(true);
@@ -44,30 +44,30 @@ const HandleGameMessage = ({ message, playerList, myName }) => {
                 setBuyPhase(true);
                 break;
             case 'UPDATE_MONEY':
-                updateMoney(message[1],parseInt(message[2],10))
+                updateMoney(msg[1],parseInt(msg[2],10))
                 break;
             case 'UPDATE_PLAYER_SHARE':
-                setShares(prevShares => ({...prevShares, [message[1]]:parseInt(message[2],10)}));
+                setShares(prevShares => ({...prevShares, [msg[1]]:parseInt(msg[2],10)}));
                 break;
             case 'UPDATE_SHARE_NUMBER':
-                setRemainShare(prev => ({...prev, [message[1]]:prev[message[1]]-1}));
+                setRemainShare(prev => ({...prev, [msg[1]]:prev[msg[1]]-1}));
                 break;
             case 'UPDATE_SHARE_PRICE':
-                setSharePrices(prev => ({...prev, [message[1]]:parseInt(message[2],10)}));
+                setSharePrices(prev => ({...prev, [msg[1]]:parseInt(msg[2],10)}));
                 break;
             case 'GAME_PHASE':
                 setBuyPhase(false);
                 setGamePhase(true);
                 break;
             default:
-                console.log(`default ${message}`);
+                console.log(`default ${msg}`);
                 break;
         }}, [updateMoney])
 
     useEffect(() => {
-        console.log(`whole message = ${message}`);
-        handleMessage(message);
-    },[message, handleMessage, setCurrentAuctionPrice, setIsMyTurn]);
+        console.log(`whole message = ${msg}`);
+        handleMessage(msg);
+    },[msg, handleMessage, setCurrentAuctionPrice, setIsMyTurn]);
 
     return (
         <div>

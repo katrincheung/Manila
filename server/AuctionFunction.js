@@ -2,11 +2,9 @@ import {getNextPlayer, setNextPlayerTurn, startBuyPhase, startGamePhase} from ".
 
 
 
-export function bid(price, players, ws){
-    for(let id in players){
-        players[id].ws.send(`CURRENT_PRICE ${price}`);
-    }
-    setNextPlayerTurn(players, ws)
+export function bid(price, game, ws){
+    game.send(`CURRENT_PRICE ${price}`)
+    setNextPlayerTurn(game, ws)
 }
 
 export function passAuction(game, ws){
@@ -15,7 +13,7 @@ export function passAuction(game, ws){
     nextPlayer.ws.send(`YOUR_TURN`);
     if (getNextPlayer(game.players, nextPlayer.ws) === nextPlayer){
         nextPlayer.master = true;
-        startBuyPhase(game.players)
+        startBuyPhase(game)
     }
 }
 
@@ -49,5 +47,6 @@ export function updateShareNumber(ws, color, game) {
     for(let id in game.players){
         game.players[id].ws.send(`UPDATE_SHARE_NUMBER ${color}`);
     }
-    startGamePhase(game.players);
+
+    startGamePhase(game);
 }

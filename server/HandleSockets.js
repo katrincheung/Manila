@@ -2,12 +2,12 @@ import handleLoginRequest, { handleGameStartRequest } from "./LoginFunction.js";
 import Player from "./Player.js";
 import { bid, passAuction, updatePlayerShare, updateShareNumber } from "./AuctionFunction.js";
 import { sitPunt, deploy } from "./GameFunction.js";
-import {gameSetUp, updateMoney, updateSharePrice, startAuction, startGamePhase} from "./ControlFunction.js";
+import { updateMoney, updateSharePrice, startAuction, startGamePhase} from "./ControlFunction.js";
 import Game from "./Game.js";
 
 
 let waitingRooms = {};
-let playingRooms = {};
+let games = {};
 let inGame = false;
 /*
 playingRooms = {
@@ -21,58 +21,57 @@ playingRooms = {
 }
  */
 
-export default function handleSockets(ws, message) {
-    let command = message[0];
+export default function handleSockets(ws, msg) {
+    let command = msg[0];
     if(!inGame){
         switch(command){
             case 'LOGIN':
-                ws.NAME = message[1];
-                ws.CODE = message[2];
+                ws.NAME = msg[1];
+                ws.CODE = msg[2];
                 const player = new Player(ws.NAME, ws);
                 waitingRooms = handleLoginRequest(ws.CODE, waitingRooms, player);
                 break;
             case 'GAME_START':
-                playingRooms[ws.CODE] = new Game(ws.CODE);
-                playingRooms[ws.CODE].players = handleGameStartRequest(waitingRooms[ws.CODE]);
+                games[ws.CODE] = new Game(ws.CODE);
+                handleGameStartRequest(games[ws.CODE], waitingRooms[ws.CODE]);
                 inGame = true;
-                gameSetUp(playingRooms[ws.CODE])
-                startAuction(playingRooms[ws.CODE].players)
+                startAuction(games[ws.CODE])
                 ws.send('YOUR_TURN');
                 break;
             default:
-                console.log(`unknownInput = ${message}`);
+                console.log(`unknownInput = ${msg}`);
                 break;
         }
     }
     else{
         switch (command){
             case 'BID':
-                bid(message[1], playingRooms[ws.CODE].players, ws);
+                bid(msg[1], games[ws.CODE], ws);
                 break;
             case 'PASS':
-                passAuction(playingRooms[ws.CODE], ws)
+                passAuction(games[ws.CODE], ws)
                 break;
             case 'UPDATE_MONEY':
-                updateMoney(ws, message[1], playingRooms[ws.CODE])
+                updateMoney(ws, msg[1], games[ws.CODE])
                 break;
             case 'UPDATE_PLAYER_SHARE':
-                updatePlayerShare(ws, message[1], playingRooms[ws.CODE])
+                updatePlayerShare(ws, msg[1], games[ws.CODE])
                 break;
             case 'UPDATE_SHARE_NUMBER':
-                updateShareNumber(ws, message[1], playingRooms[ws.CODE])
-                startGamePhase(playingRooms[ws.CODE], ws.CODE)
+                updateShareNumber(ws, msg[1], games[ws.CODE])
+                startGamePhase(games[ws.CODE], ws.CODE)
                 break;
             case 'UPDATE_GLOBAL_SHARE_PRICE':
-                updateSharePrice(ws, message[1], message[2], playingRooms[ws.CODE])
+                updateSharePrice(ws, msg[1], msg[2], games[ws.CODE])
                 break;
             case 'SIT_PUNT':
-                sitPunt(ws, message[1], playingRooms[ws.CODE])
+                sitPunt(ws, msg[1], games[ws.CODE])
                 break;
             case 'DEPLOY':
-                deploy(ws, message[1], message[2], playingRooms[ws.CODE])
+                deploy(ws, msg[1], msg[2], games[ws.CODE])
                 break;
             default:
-                console.log(`unknownInput = ${message}`);
+                console.log(`unknownInput = ${msg}`);
                 break;
         }
     }
