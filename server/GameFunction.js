@@ -1,51 +1,46 @@
 import {getNextPlayer} from "./ControlFunction.js";
 
 
-export function sitPunt(ws, color, players){
-    for(const [uid, player] of Object.entries(players)){
-        player.ws.send(`SIT_PUNT ${color} ${ws.NAME}`);
-    }
-    const nextPlayer = getNextPlayer(players, ws);
+export function sitPunt(ws, color, game){
+    game.send(`SIT_PUNT ${color} ${ws.NAME}`)
+    const nextPlayer = getNextPlayer(game.players, ws);
     if(nextPlayer.master){
-        updateLocation(players, ws.CODE)
+        updateLocation(game)
     }
     nextPlayer.ws.send('YOUR_TURN');
 }
 
-export function deploy(ws, location, choice, players){
-    for(const [uid, player] of Object.entries(players)){
-        player.ws.send(`DEPLOY ${location} ${choice} ${ws.NAME}`);
-    }
-    const nextPlayer = getNextPlayer(players, ws);
-    if(nextPlayer.master){
-        updateLocation(players, ws.CODE)
-    }
-    nextPlayer.ws.send('YOUR_TURN');
+export function deploy(ws, location, choice, game){
     if (location == 'PILOT'){
         if (choice == 'large')
-            game[ws.CODE].largePilot = true;
+            game.largePilot = true;
         else{
-            game[ws.CODE].smallPilot = true;
+            game.smallPilot = true;
         }
     }
+    game.send(`DEPLOY ${location} ${choice} ${ws.NAME}`);
+    const nextPlayer = getNextPlayer(game.players, ws);
+    if(nextPlayer.master){
+        updateLocation(game)
+    }
+    nextPlayer.ws.send('YOUR_TURN');
+
 }
 
-function updateLocation(players, code){
+function updateLocation(game){
     const brown = Math.ceil(Math.random() * 6);
     const blue = Math.ceil(Math.random() * 6);
     const yellow = Math.ceil(Math.random() * 6);
     const green = Math.ceil(Math.random() * 6);
-    if (game[code].round === 2){
-        if (game[code].smallPilot == true){
+    if (game.round === 2){
+        if (game.smallPilot == true){
             console.log('wait for small pilot action');
         }
-        if (game[code].largePilot == true){
+        if (game.largePilot == true){
             console.log('wait for large pilot action');
         }
     }
-    for(const [uid, player] of Object.entries(players)){
-        player.ws.send(`LOCATION ${brown} ${blue} ${yellow} ${green}`);
-    }
-    game[code].round += 1;
-    console.log('round', game[code].round, 'end');
+    game.location = {'brown':brown, 'blue':blue, 'yellow':yellow, 'green':green};
+    game.send(`LOCATION ${brown} ${blue} ${yellow} ${green}`);
+    game.round += 1;
 }

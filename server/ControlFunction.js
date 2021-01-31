@@ -22,6 +22,7 @@ export function startAuction(game){
 }
 
 export function startBuyPhase(game){
+    game.resetPass();
     game.send(`BUY_PHASE`)
 }
 

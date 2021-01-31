@@ -4,14 +4,17 @@ export default class Game{
         this.code = code;
     }
 
+    players = {};
     remainShares = {'brown':2, 'blue':2, 'yellow':2, 'green':2};
     sharePrices = {'brown':0, 'blue':0, 'yellow':0, 'green':0};
+    location = {'brown':0, 'blue':0, 'yellow':0, 'green':0};
+
     round = 0; // 0,1,2 round of game
     turn = 0; // whose turn in 1 round, mainly used by pilot
+
     smallPilot = 0; //initialised at 0, update with player id
     largePilot = 0; //initialised at 0, update with player id
     pirate = [];
-    players = {};
 
     updateRemainShares() {
         this.send(`UPDATE_REMAIN_SHARES ${this.remainShares.brown} ${this.remainShares.blue} ${this.remainShares.yellow} ${this.remainShares.green}`)
@@ -49,8 +52,8 @@ export default class Game{
 
     //call after auction
     resetPass() {
-        for(let player of this.players){
-            player.pass = false;
+        for (let id in this.players){
+            this.players[id].pass = false;
         }
     }
 
