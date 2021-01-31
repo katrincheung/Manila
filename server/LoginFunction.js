@@ -50,9 +50,9 @@ function gameSetUp(game) {
                 i+=1;
             }
         }
-        game.players[playerId].shares = share;
+        game.players[playerId].shares = {'brown':share[0],'blue':share[1],'yellow':share[2],'green':share[3]};
         game.players[playerId].ws.send(`START_SHARE ${share.join(' ')}`);
     }
-    game.remain_shares = {'brown':remain[0]+2,'blue':remain[1]+2,'yellow':remain[2]+2,'green':remain[3]+2};
+    game.remainShares = {'brown':remain[0]+2,'blue':remain[1]+2,'yellow':remain[2]+2,'green':remain[3]+2};
     game.updateRemainShares()
 }

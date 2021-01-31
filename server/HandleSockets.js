@@ -1,8 +1,8 @@
 import handleLoginRequest, { handleGameStartRequest } from "./LoginFunction.js";
 import Player from "./Player.js";
-import { bid, passAuction, updatePlayerShare, updateShareNumber } from "./AuctionFunction.js";
+import { bid, passAuction, updatePlayerShare, updateShareNumber, buyShare } from "./AuctionFunction.js";
 import { sitPunt, deploy } from "./GameFunction.js";
-import { updateMoney, updateSharePrice, startAuction, startGamePhase} from "./ControlFunction.js";
+import { startAuction, startGamePhase} from "./ControlFunction.js";
 import Game from "./Game.js";
 
 
@@ -51,8 +51,8 @@ export default function handleSockets(ws, msg) {
             case 'PASS':
                 passAuction(games[ws.CODE], ws)
                 break;
-            case 'UPDATE_MONEY':
-                updateMoney(ws, msg[1], games[ws.CODE])
+            case 'PAY':
+                games[ws.CODE].players[ws.UID].pay(parseInt(msg[1],10), games[ws.CODE])
                 break;
             case 'UPDATE_PLAYER_SHARE':
                 updatePlayerShare(ws, msg[1], games[ws.CODE])
@@ -61,8 +61,8 @@ export default function handleSockets(ws, msg) {
                 updateShareNumber(ws, msg[1], games[ws.CODE])
                 startGamePhase(games[ws.CODE], ws.CODE)
                 break;
-            case 'UPDATE_GLOBAL_SHARE_PRICE':
-                updateSharePrice(ws, msg[1], msg[2], games[ws.CODE])
+            case 'BUY_SHARE':
+                buyShare(ws, msg[1], games[ws.CODE])
                 break;
             case 'SIT_PUNT':
                 sitPunt(ws, msg[1], games[ws.CODE])

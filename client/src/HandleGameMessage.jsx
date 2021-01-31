@@ -6,8 +6,7 @@ const HandleGameMessage = ({ msg, playerList, myName }) => {
 
     const [ money, setMoney ] = useState(playerList.money);
     const updateMoney = useCallback((player, val) => {
-        console.log(player,val);
-        setMoney(prev => ({...prev, [player]:prev[player]+val}))
+        setMoney(prev => ({...prev, [player]:val}))
     }, [setMoney])
     const [ shares, setShares ] = useState(playerList.share);
     const [ initShare, setInitShare ] = useState({})

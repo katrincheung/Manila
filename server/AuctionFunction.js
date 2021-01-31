@@ -17,30 +17,34 @@ export function passAuction(game, ws){
     }
 }
 
-export function updatePlayerShare(ws, shareNum, game) {
+export function updatePlayerShare(game, player_) {
     for(const [uid, player] of Object.entries(game.players)){
-        if(player.name !== ws.NAME){
-            player.ws.send(`UPDATE_PLAYER_SHARE ${ws.NAME} ${shareNum}`)
+        if(player.name !== player_.name){
+            player.ws.send(`UPDATE_PLAYER_SHARE ${player_.name} ${player_.getShareNum()}`)
         }
     }
 }
 
+/*
+use in buy phase
+should remove
+ */
 export function updateShareNumber(ws, color, game) {
     switch (color){
         case 'brown':
-            game.remain_shares[0] -= 1;
+            game.remainShares[0] -= 1;
             game.players[ws.UID].shares[0] += 1;
             break;
         case 'blue':
-            game.remain_shares[1] -= 1;
+            game.remainShares[1] -= 1;
             game.players[ws.UID].shares[1] += 1;
             break;
         case 'yellow':
-            game.remain_shares[2] -= 1;
+            game.remainShares[2] -= 1;
             game.players[ws.UID].shares[2] += 1;
             break;
         default:
-            game.remain_shares[3] -= 1;
+            game.remainShares[3] -= 1;
             game.players[ws.UID].shares[3] += 1;
             break;
     }
@@ -49,4 +53,14 @@ export function updateShareNumber(ws, color, game) {
     }
 
     startGamePhase(game);
+}
+
+export function buyShare(ws, color, game) {
+    let player = game.players[ws.UID];
+    game.decreaseRemainShares(color);
+    game.updateRemainShares();
+    player.shares[color] += 1;
+    (game.sharePrices[color] === 0) ? player.pay(5) : player.pay(game.sharePrices[color]);
+    game.updateSharePrice(color);
+    updatePlayerShare(game, player);
 }
