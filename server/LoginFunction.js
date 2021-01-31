@@ -1,5 +1,3 @@
-import {startGamePhase} from "./ControlFunction";
-
 export default function handleLoginRequest(code, rooms, player) {
     if(code in rooms){
         player.ws.send(`GUEST_PLAYER ${player.name}`);

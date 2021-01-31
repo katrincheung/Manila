@@ -18,8 +18,10 @@ export default class Game{
     }
 
     decreaseRemainShares(color) {
-        if(this.remainShares[color] > 0)
-            this.remainShares[color] -= 1
+        if(this.remainShares[color] > 0) {
+            this.remainShares[color] -= 1;
+            this.updateRemainShares();
+        }
     }
 
     updateSharePrice(color) {

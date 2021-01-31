@@ -58,7 +58,6 @@ export function updateShareNumber(ws, color, game) {
 export function buyShare(ws, color, game) {
     let player = game.players[ws.UID];
     game.decreaseRemainShares(color);
-    game.updateRemainShares();
     player.shares[color] += 1;
     updatePlayerShare(game, player);
     (game.sharePrices[color] === 0) ? player.pay(5, game) : player.pay(game.sharePrices[color], game);
