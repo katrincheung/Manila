@@ -1,3 +1,5 @@
+import {startGamePhase} from "./ControlFunction";
+
 export default function handleLoginRequest(code, rooms, player) {
     if(code in rooms){
         player.ws.send(`GUEST_PLAYER ${player.name}`);
@@ -54,5 +56,5 @@ function gameSetUp(game) {
         game.players[playerId].ws.send(`START_SHARE ${share.join(' ')}`);
     }
     game.remainShares = {'brown':remain[0]+2,'blue':remain[1]+2,'yellow':remain[2]+2,'green':remain[3]+2};
-    game.updateRemainShares()
+    game.updateRemainShares();
 }

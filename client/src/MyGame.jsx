@@ -22,7 +22,6 @@ function MyGame({ myName, money, shares, initShare, remainShare, sharePrices, cu
         if(remainShare[color] > 0) {
             socket.send(`BUY_SHARE ${color}`)
             setMyShareList({...myShareList, [color]: myShareList[color] + 1});
-            (sharePrices[color] === 0) ? pay(5) : pay(sharePrices[color]);
         }
     };
     const pay = (fee) => socket.send(`PAY ${fee}`);

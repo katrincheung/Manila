@@ -60,7 +60,8 @@ export function buyShare(ws, color, game) {
     game.decreaseRemainShares(color);
     game.updateRemainShares();
     player.shares[color] += 1;
-    (game.sharePrices[color] === 0) ? player.pay(5) : player.pay(game.sharePrices[color]);
-    game.updateSharePrice(color);
     updatePlayerShare(game, player);
+    (game.sharePrices[color] === 0) ? player.pay(5, game) : player.pay(game.sharePrices[color], game);
+    game.updateSharePrice(color);
+    startGamePhase(game)
 }
