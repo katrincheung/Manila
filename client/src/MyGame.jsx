@@ -19,10 +19,13 @@ function MyGame({ myName, money, shares, initShare, remainShare, sharePrices, cu
     },[buyPhase, currentAuctionPrice])
     const addValue = val => setAuction(auction+val);
 
+    const [ choosePuntPhase, setChoosePuntPhase ] = useState(false);
+
     const buyShare = ( color ) => {
         if(remainShare[color] > 0) {
             socket.send(`BUY_SHARE ${color}`)
             setMyShareList({...myShareList, [color]: myShareList[color] + 1});
+            setChoosePuntPhase(true);
         }
     };
     const pay = (fee) => socket.send(`PAY ${fee}`);
@@ -45,16 +48,20 @@ function MyGame({ myName, money, shares, initShare, remainShare, sharePrices, cu
                                 : <h2>Current Price: {currentAuctionPrice}</h2>
                         }
                     </div>:
-                    <div><ChoosePuntTable/></div>
+                    <div></div>
             }
             {
                 (buyPhase) ?
                     <div>{
                         (isMyTurn) ?
-                        <AuctionShareTable sharePrices={sharePrices} shareNumbers={remainShare} priceUp={buyShare}/>
+                            <div>{
+                                (choosePuntPhase) ?
+                                    <ChoosePuntTable/>
+                                    : <AuctionShareTable sharePrices={sharePrices} shareNumbers={remainShare} priceUp={buyShare}/>
+                            }</div>
                         : <h4>Master's buying phase</h4>
                     }</div>
-                    : <div><ChoosePuntTable/></div>
+                    : <div></div>
             }
             {
                 (gamePhase) ?

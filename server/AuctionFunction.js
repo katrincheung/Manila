@@ -62,5 +62,8 @@ export function buyShare(ws, color, game) {
     updatePlayerShare(game, player);
     (game.sharePrices[color] === 0) ? player.pay(5, game) : player.pay(game.sharePrices[color], game);
     game.updateSharePrice(color);
+}
+
+export function choosePunt(game, punt1, locate1, punt2, locate2, punt3, locate3) {
     startGamePhase(game)
 }

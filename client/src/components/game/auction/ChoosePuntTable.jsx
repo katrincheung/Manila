@@ -9,6 +9,7 @@ import TableButton from "../../common/table/tableButton";
 import TCell from "../../common/table/TCell";
 import TableCell from "@material-ui/core/TableCell";
 import SetPuntButton from "../../common/ChoosePuntTable/SetPuntButton";
+import {socket} from "../../../App";
 
 
 
@@ -34,6 +35,28 @@ const ChoosePuntTable = () => {
         setSum(brownValue+blueValue+yellowValue+greenValue)
     }, [brownValue, blueValue, yellowValue, greenValue])
 
+    const confirm = () => {
+        let msg = `CHOOSE_PUNT`;
+        let count = 0;
+        if (isBrown) {
+            msg += ` brown ${brownValue}`;
+            count += 1;
+        }
+        if (isBlue) {
+            msg += ` blue ${blueValue}`;
+            count += 1;
+        }
+        if (isYellow) {
+            msg += ` yellow ${yellowValue}`;
+            count += 1;
+        }
+        if (isGreen) {
+            msg += ` green ${greenValue}`;
+            count += 1;
+        }
+        if (count === 3 && sum === 9)
+            socket.send(msg);
+    }
 
 
     return(
@@ -42,7 +65,7 @@ const ChoosePuntTable = () => {
             <Table aria-label="a dense table" className={styles.container}>
                 <TableHead>
                     <TableCell align="center" colSpan={2}>Sum: {sum}</TableCell>
-                    <TableCell align="center" colSpan={2}><TableButton children='CONFIRM'/></TableCell>
+                    <TableCell align="center" colSpan={2}><TableButton children='CONFIRM' onClick={confirm}/></TableCell>
                 </TableHead>
                 <TableBody>
                     <TableRow>
@@ -51,8 +74,6 @@ const ChoosePuntTable = () => {
                         <TCell>Yellow</TCell>
                         <TCell>Green</TCell>
                     </TableRow>
-                </TableBody>
-                <TableBody>
                     <TableRow>
                         <TCell>{brownValue}</TCell>
                         <TCell>{blueValue}</TCell>
@@ -60,7 +81,6 @@ const ChoosePuntTable = () => {
                         <TCell>{greenValue}</TCell>
                     </TableRow>
                     <TableRow>
-
                         <TCell><SetPuntButton is={isBrown} setIs={setIsBrown} value={brownValue} setValue={setBrownValue} sum={sum}/></TCell>
                         <TCell><SetPuntButton is={isBlue} setIs={setIsBlue} value={blueValue} setValue={setBlueValue} sum={sum}/></TCell>
                         <TCell><SetPuntButton is={isYellow} setIs={setIsYellow} value={yellowValue} setValue={setYellowValue} sum={sum}/></TCell>
