@@ -5,6 +5,7 @@ import Header from "./components/common/Header";
 import {socket} from "./App";
 import PlayerStatusRow from "./components/game/PlayerStatusRow";
 import GameBoard from "./components/game/GameBoard";
+import ChoosePuntTable from "./components/game/auction/ChoosePuntTable";
 
 function MyGame({ myName, money, shares, initShare, remainShare, sharePrices, currentAuctionPrice, isMyTurn, setIsMyTurn, auctionPhase, buyPhase, gamePhase, handleMessage, updateMoney }) {
 
@@ -44,7 +45,7 @@ function MyGame({ myName, money, shares, initShare, remainShare, sharePrices, cu
                                 : <h2>Current Price: {currentAuctionPrice}</h2>
                         }
                     </div>:
-                    <div></div>
+                    <div><ChoosePuntTable/></div>
             }
             {
                 (buyPhase) ?
@@ -53,7 +54,7 @@ function MyGame({ myName, money, shares, initShare, remainShare, sharePrices, cu
                         <AuctionShareTable sharePrices={sharePrices} shareNumbers={remainShare} priceUp={buyShare}/>
                         : <h4>Master's buying phase</h4>
                     }</div>
-                    : <div></div>
+                    : <div><ChoosePuntTable/></div>
             }
             {
                 (gamePhase) ?
